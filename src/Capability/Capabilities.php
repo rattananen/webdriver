@@ -6,7 +6,7 @@ class Capabilities implements \JsonSerializable
 {
     public Capability $alwaysMatch;
 
-    /** @var Capability[] $firstMatch*/
+    /** @var Capability[] $firstMatch */
     public array $firstMatch = [];
 
     public function jsonSerialize(): mixed

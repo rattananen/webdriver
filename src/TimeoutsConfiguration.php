@@ -4,11 +4,11 @@ namespace Jkk\Webdriver;
 
 class TimeoutsConfiguration implements \JsonSerializable
 {
-    public ?int $script = 30000;
+    public ?int $script = 5000;
 
-    public int $pageLoad = 300000;
+    public int $pageLoad = 7000;
 
-    public int $implicit = 0;
+    public int $implicit = 4000;
 
     public function jsonSerialize(): mixed
     {
