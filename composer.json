@@ -1,0 +1,23 @@
+{
+    "name": "jkk/webdriver",
+    "license": "proprietary",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=8.1",
+        "guzzlehttp/guzzle": "^7.4.5",
+        "psr/http-client": "^1.0"
+    },
+    "require-dev": {
+    },
+    "autoload": {
+        "psr-4": {
+            "Jkk\\Webdriver\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Jkk\\Webdriver\\Tests\\": "tests/"
+        }
+    }
+}
