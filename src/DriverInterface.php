@@ -1,9 +1,9 @@
 <?php
 
-namespace Jkk\Webdriver;
+namespace Rattananen\Webdriver;
 
 use GuzzleHttp\Client;
-use Jkk\Webdriver\Capability\Capabilities;
+use Rattananen\Webdriver\Capability\Capabilities;
 
 interface DriverInterface
 {

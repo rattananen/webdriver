@@ -1,5 +1,6 @@
 {
-    "name": "jkk/webdriver",
+    "name": "rattananen/webdriver",
+    "type": "library",
     "license": "proprietary",
     "version": "0.1",
     "minimum-stability": "dev",
@@ -10,15 +11,16 @@
         "psr/http-message": "^1.0"
     },
     "require-dev": {
+        "phpunit/phpunit": "^9"
     },
     "autoload": {
         "psr-4": {
-            "Jkk\\Webdriver\\": "src/"
+            "Rattananen\\Webdriver\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Jkk\\Webdriver\\Tests\\": "tests/"
+            "Rattananen\\Webdriver\\Tests\\": "tests/"
         }
     }
 }

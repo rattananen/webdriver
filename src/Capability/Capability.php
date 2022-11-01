@@ -1,8 +1,8 @@
 <?php
 
-namespace Jkk\Webdriver\Capability;
+namespace Rattananen\Webdriver\Capability;
 
-use Jkk\Webdriver\TimeoutsConfiguration;
+use Rattananen\Webdriver\TimeoutsConfiguration;
 
 class Capability implements \JsonSerializable
 {

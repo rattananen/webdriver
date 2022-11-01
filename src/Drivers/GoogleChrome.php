@@ -1,11 +1,11 @@
 <?php
 
-namespace Jkk\Webdriver\Drivers;
+namespace Rattananen\Webdriver\Drivers;
 
-use Jkk\Webdriver\DriverAbstract;
-use Jkk\Webdriver\Capability\Capabilities;
-use Jkk\Webdriver\Capability\Capability;
-use Jkk\Webdriver\TimeoutsConfiguration;
+use Rattananen\Webdriver\DriverAbstract;
+use Rattananen\Webdriver\Capability\Capabilities;
+use Rattananen\Webdriver\Capability\Capability;
+use Rattananen\Webdriver\TimeoutsConfiguration;
 
 
 /** 

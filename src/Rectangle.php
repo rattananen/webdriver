@@ -1,6 +1,6 @@
 <?php
 
-namespace Jkk\Webdriver;
+namespace Rattananen\Webdriver;
 
 class Rectangle implements \JsonSerializable
 {
@@ -14,7 +14,6 @@ class Rectangle implements \JsonSerializable
 
     public function jsonSerialize(): mixed
     {
-
         return [
             'x' => $this->x,
             'y' => $this->y,

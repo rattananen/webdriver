@@ -1,6 +1,6 @@
 <?php
 
-namespace Jkk\Webdriver\Capability;
+namespace Rattananen\Webdriver\Capability;
 
 class Capabilities implements \JsonSerializable
 {

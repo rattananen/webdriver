@@ -1,6 +1,6 @@
 <?php
 
-namespace Jkk\Webdriver;
+namespace Rattananen\Webdriver;
 
 use SplFileObject;
 

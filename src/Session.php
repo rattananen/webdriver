@@ -1,8 +1,8 @@
 <?php
 
-namespace Jkk\Webdriver;
+namespace Rattananen\Webdriver;
 
-use Jkk\Webdriver\LocatorStrategy\LocatorStrategyInterface;
+use Rattananen\Webdriver\LocatorStrategy\LocatorStrategyInterface;
 use SplFileObject;
 
 /** @todo implement missing command , add handle errors, maybe create SessionInterface */
@@ -46,9 +46,11 @@ class Session
     public function findElement(LocatorStrategyInterface $ls): ?Element
     {
         $res = $this->driver->getClient()->post($this->basePath . '/element', ['body' => json_encode($ls)]);
+
         if ($res->getStatusCode() == 404) {
             return null;
         }
+
         $elem = Helper::decodeJsonResponse($res)['value'];
 
         return new Element($this->driver, $this->sessionId, current($elem));
@@ -76,7 +78,7 @@ class Session
     }
 
     /**
-     * @return string|SplFileObject return PNG in non-urlsafe base64 or null if $filename set
+     * @return string|SplFileObject return PNG in non-urlsafe base64 or SplFileObject if $filename set
      */
     public function screenshot(?string $filename = null): string|SplFileObject
     {

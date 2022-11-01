@@ -1,6 +1,6 @@
 <?php
 
-namespace Jkk\Webdriver\LocatorStrategy;
+namespace Rattananen\Webdriver\LocatorStrategy;
 
 interface LocatorStrategyInterface extends \JsonSerializable
 {
