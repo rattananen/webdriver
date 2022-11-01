@@ -2,6 +2,7 @@
 
 namespace Jkk\Webdriver;
 
+use Jkk\Webdriver\LocatorStrategy\LocatorStrategyInterface;
 use SplFileObject;
 
 /** @todo implement missing command , add handle errors, maybe create SessionInterface */
@@ -42,17 +43,52 @@ class Session
         $this->driver->getClient()->post($this->basePath . '/url', ['body' => json_encode(['url' => $url])]);
     }
 
+    public function findElement(LocatorStrategyInterface $ls): ?Element
+    {
+        $res = $this->driver->getClient()->post($this->basePath . '/element', ['body' => json_encode($ls)]);
+        if ($res->getStatusCode() == 404) {
+            return null;
+        }
+        $elem = Helper::decodeJsonResponse($res)['value'];
+
+        return new Element($this->driver, $this->sessionId, current($elem));
+    }
+
     /**
-     * @return ?string return PNG in non-urlsafe base64 or null if $file set (for performance)
+     * @return Element[]
      */
-    public function screenshot(?SplFileObject $file = null): ?string
+    public function findElements(LocatorStrategyInterface $ls): array
+    {
+        $res = $this->driver->getClient()->post($this->basePath . '/elements', ['body' => json_encode($ls)]);
+
+        $data = Helper::decodeJsonResponse($res);
+        $out = [];
+        foreach ($data['value'] as $elem) {
+            $out[] = new Element($this->driver, $this->sessionId, current($elem));
+        }
+
+        return $out;
+    }
+
+    public function execute(Script $sc): mixed
+    {
+        $res = $this->driver->getClient()->post($this->basePath . '/execute/sync', ['body' => json_encode($sc)]);
+    }
+
+    /**
+     * @return string|SplFileObject return PNG in non-urlsafe base64 or null if $filename set
+     */
+    public function screenshot(?string $filename = null): string|SplFileObject
     {
         $res = $this->driver->getClient()->get($this->basePath . '/screenshot');
         $data = Helper::decodeJsonResponse($res);
-        if ($file === null) {
+
+        if ($filename === null) {
             return $data['value'];
         }
+
+        $file = new SplFileObject($filename, 'w');
         $file->fwrite(base64_decode($data['value']));
-        return null;
+        return $file;
     }
 }

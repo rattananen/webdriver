@@ -22,7 +22,7 @@ class GoogleChrome extends DriverAbstract
         $caps->alwaysMatch->extraOptions['goog:chromeOptions'] = [
             'args' => [
                 // auto debug port
-                '--remote-debugging-port=0',
+                //'--remote-debugging-port=0',
 
                 // disable undesired features
                 '--disable-background-networking',
@@ -33,19 +33,23 @@ class GoogleChrome extends DriverAbstract
                 '--disable-prompt-on-repost',
                 '--disable-sync',
                 '--disable-translate',
+                '--disable-extensions',
                 '--disable-features=ChromeWhatsNewUI',
+                
+                //'--disable-gpu-sandbox',
                 '--metrics-recording-only',
                 '--no-first-run',
                 '--safebrowsing-disable-auto-update',
 
                 // automation mode
-                '--enable-automation',
+                //'--enable-automation',
 
                 // password settings
                 '--password-store=basic',
                 '--use-mock-keychain', // osX only
                 '--headless',
                 '--disable-gpu',
+                '--disable-crash-reporter',
                 '--font-render-hinting=none',
                 '--hide-scrollbars',
                 '--mute-audio',

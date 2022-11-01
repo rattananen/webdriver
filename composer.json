@@ -1,6 +1,7 @@
 {
     "name": "jkk/webdriver",
     "license": "proprietary",
+    "version": "0.1",
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {

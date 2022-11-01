@@ -13,4 +13,13 @@ class Helper
     {
         return json_decode($res->getBody()->getContents(), true);
     }
+
+    public static function assertResponseCode(ResponseInterface $res, array $codes): void
+    {
+        if (in_array($res->getStatusCode(), $codes)) {
+            return;
+        }
+        
+        throw new \InvalidArgumentException(sprintf("%s %s", $res->getStatusCode(), $res->getReasonPhrase()));
+    }
 }
