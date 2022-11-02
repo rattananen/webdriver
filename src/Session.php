@@ -12,9 +12,9 @@ class Session
 
     private string $basePath;
 
-    private Window $window;
+    //private Window $window;
 
-    //public readonly Window $window;
+    public readonly Window $window;
 
     public function __construct(
         private DriverInterface $driver,
@@ -25,10 +25,10 @@ class Session
         $this->window = new Window($this->driver, $this->sessionId);
     }
 
-    public function window(): Window
-    {
-        return $this->window;
-    }
+    // public function window(): Window
+    // {
+    //     return $this->window;
+    // }
 
     public function __destruct()
     {

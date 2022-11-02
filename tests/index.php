@@ -12,7 +12,7 @@ $driver = new GoogleChrome('172.23.176.1:9515');
 
 $session = $driver->newSession();
 
-$session->window()->setRect(new Rectangle(0, 0, 1600, 900));
+$session->window->setRect(new Rectangle(0, 0, 1600, 900));
 
 $url = 'http://localhost:8001/';
 
