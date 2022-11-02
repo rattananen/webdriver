@@ -51,7 +51,7 @@ class GoogleChrome extends DriverAbstract
                 '--hide-scrollbars',
                 '--mute-audio',
                 '--no-sandbox',
-                '--ignore-certificate-errors'
+                //'--ignore-certificate-errors'
                 //'--user-data-dir='
             ]
         ];

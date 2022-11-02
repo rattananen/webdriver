@@ -4,7 +4,7 @@ use PHPUnit\Framework\TestCase;
 
 class LazyTest extends TestCase
 {
-    public function testCommon():void
+    public function testLazy():void
     {
         $this->assertEquals('lazy', 'yes');
     }

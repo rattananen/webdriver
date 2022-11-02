@@ -4,10 +4,14 @@ namespace Rattananen\Webdriver\Capability;
 
 class Capabilities implements \JsonSerializable
 {
-    public Capability $alwaysMatch;
-
-    /** @var Capability[] $firstMatch */
-    public array $firstMatch = [];
+    /**
+     * @param Capability[] $firstMatch
+    */
+    public function __construct(
+        public Capability $alwaysMatch,
+        public array $firstMatch = []
+        ){ 
+    }
 
     public function jsonSerialize(): mixed
     {

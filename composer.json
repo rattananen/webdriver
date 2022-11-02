@@ -5,6 +5,11 @@
     "version": "0.1",
     "minimum-stability": "dev",
     "prefer-stable": true,
+    "authors": [
+        {
+            "name": "Jakkapong Rattananen"
+        }
+    ],
     "require": {
         "php": ">=8.1",
         "guzzlehttp/guzzle": "^7.4.5",

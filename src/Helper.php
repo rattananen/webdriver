@@ -2,6 +2,7 @@
 
 namespace Rattananen\Webdriver;
 
+use Rattananen\Webdriver\Exception\WebdriverException;
 use Psr\Http\Message\ResponseInterface;
 
 /** 
@@ -23,6 +24,6 @@ class Helper
             return;
         }
         
-        throw new \InvalidArgumentException(sprintf("%s %s", $response->getStatusCode(), $response->getReasonPhrase()));
+        throw new WebdriverException(sprintf("%s %s", $response->getStatusCode(), $response->getReasonPhrase()));
     }
 }

@@ -20,7 +20,7 @@ class Capability implements \JsonSerializable
     public function jsonSerialize(): mixed
     {
         $out = [];
-        //Reflection Class is slower don't use them often
+        //Reflection Class is consume more resource don't use them often
         foreach (static::getClassMetaData() as $k) {
             if (isset($this->{$k})) {
                 $out[$k] = $this->{$k};

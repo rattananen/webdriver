@@ -4,7 +4,6 @@ namespace Rattananen\Webdriver\Entity;
 
 class TimeoutsConfiguration implements \JsonSerializable
 {
-
     public function __construct(
         public ?int $script = 5000,
         public int $pageLoad = 7000,

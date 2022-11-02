@@ -4,7 +4,7 @@ namespace Rattananen\Webdriver;
 
 class Element
 {
-    use ScreenshotTrait;
+    use ScreenshotTrait, FindElementTrait;
 
     private string $basePath;
 
