@@ -2,21 +2,25 @@
 
 namespace Rattananen\Webdriver\Capability;
 
-use Rattananen\Webdriver\TimeoutsConfiguration;
+use Rattananen\Webdriver\Entity\TimeoutsConfiguration;
 
 class Capability implements \JsonSerializable
 {
 
     public string $browserName;
 
+    public string $platformName;
+
     public TimeoutsConfiguration $timeouts;
+
+    public bool $acceptInsecureCerts = true;
 
     public array $extraOptions = [];
 
     public function jsonSerialize(): mixed
     {
         $out = [];
-        /** Reflection Class is slower don't use them often */
+        //Reflection Class is slower don't use them often
         foreach (static::getClassMetaData() as $k) {
             if (isset($this->{$k})) {
                 $out[$k] = $this->{$k};
@@ -32,7 +36,9 @@ class Capability implements \JsonSerializable
     {
         return [
             'browserName',
-            'timeouts'
+            'platformName',
+            'timeouts',
+            'acceptInsecureCerts'
         ];
     }
 }

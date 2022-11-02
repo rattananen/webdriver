@@ -2,6 +2,8 @@
 
 namespace Rattananen\Webdriver;
 
+use Rattananen\Webdriver\Entity\Rectangle;
+
 class Window
 {
     private string $basePath;
@@ -16,12 +18,12 @@ class Window
     public function getRect(): Rectangle
     {
         $res = $this->driver->getClient()->get($this->basePath . '/rect');
-        $data = Helper::decodeJsonResponse($res);
-        return Rectangle::fromArray($data['value']);
+      
+        return Rectangle::fromArray(Helper::decodeJsonResponse($res)['value']);
     }
 
-    public function setRect(Rectangle $rect): void
+    public function setRect(Rectangle $rectangle): void
     {
-        $this->driver->getClient()->post($this->basePath . '/rect', ['body' => json_encode($rect)]);
+        $this->driver->getClient()->post($this->basePath . '/rect', ['body' => json_encode($rectangle)]);
     }
 }

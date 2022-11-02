@@ -7,7 +7,7 @@ use Rattananen\Webdriver\Capability\Capabilities;
 
 interface DriverInterface
 {
-    public function newSession(?Capabilities $caps = null): Session;
+    public function newSession(?Capabilities $capabilities = null): Session;
 
     public function status(): int;
 

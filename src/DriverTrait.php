@@ -9,9 +9,9 @@ trait DriverTrait
 {
     private Client $client;
 
-    public function newSession(?Capabilities $caps = null): Session
+    public function newSession(?Capabilities $capabilities = null): Session
     {
-        $res = $this->client->post('session', ['body' => json_encode($caps ?? static::getDefaultCapabilities())]);
+        $res = $this->client->post('session', ['body' => json_encode($capabilities ?? static::getDefaultCapabilities())]);
         $data = Helper::decodeJsonResponse($res);
         return new Session($this, $data['value']['sessionId']);
     }

@@ -9,17 +9,20 @@ use Psr\Http\Message\ResponseInterface;
  */
 class Helper
 {
-    public static function decodeJsonResponse(ResponseInterface $res): array
+    public static function decodeJsonResponse(ResponseInterface $response): array
     {
-        return json_decode($res->getBody()->getContents(), true);
+        return json_decode($response->getBody()->getContents(), true);
     }
 
-    public static function assertResponseCode(ResponseInterface $res, array $codes): void
+    /**
+     * @param array<int> $codes
+    */
+    public static function assertStatusCode(ResponseInterface $response, array $codes): void
     {
-        if (in_array($res->getStatusCode(), $codes)) {
+        if (in_array($response->getStatusCode(), $codes)) {
             return;
         }
         
-        throw new \InvalidArgumentException(sprintf("%s %s", $res->getStatusCode(), $res->getReasonPhrase()));
+        throw new \InvalidArgumentException(sprintf("%s %s", $response->getStatusCode(), $response->getReasonPhrase()));
     }
 }

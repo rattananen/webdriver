@@ -5,7 +5,7 @@ namespace Rattananen\Webdriver\Drivers;
 use Rattananen\Webdriver\DriverAbstract;
 use Rattananen\Webdriver\Capability\Capabilities;
 use Rattananen\Webdriver\Capability\Capability;
-use Rattananen\Webdriver\TimeoutsConfiguration;
+use Rattananen\Webdriver\Entity\TimeoutsConfiguration;
 
 
 /** 
@@ -40,9 +40,6 @@ class GoogleChrome extends DriverAbstract
                 '--metrics-recording-only',
                 '--no-first-run',
                 '--safebrowsing-disable-auto-update',
-
-                // automation mode
-                //'--enable-automation',
 
                 // password settings
                 '--password-store=basic',

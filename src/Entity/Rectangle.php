@@ -1,6 +1,6 @@
 <?php
 
-namespace Rattananen\Webdriver;
+namespace Rattananen\Webdriver\Entity;
 
 class Rectangle implements \JsonSerializable
 {

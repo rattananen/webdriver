@@ -2,15 +2,19 @@
 
 namespace Rattananen\Webdriver;
 
-use Rattananen\Webdriver\LocatorStrategy\LocatorStrategyInterface;
+use Rattananen\Webdriver\Entity\Script;
+use Rattananen\Webdriver\Entity\PrintProperties;
 use SplFileObject;
 
-/** @todo implement missing command , add handle errors, maybe create SessionInterface */
 class Session
 {
+    use FindElementTrait, ScreenshotTrait;
+
     private string $basePath;
 
-    public readonly Window $window;
+    private Window $window;
+
+    //public readonly Window $window;
 
     public function __construct(
         private DriverInterface $driver,
@@ -21,6 +25,11 @@ class Session
         $this->window = new Window($this->driver, $this->sessionId);
     }
 
+    public function window(): Window
+    {
+        return $this->window;
+    }
+
     public function __destruct()
     {
         $this->delete();
@@ -28,61 +37,56 @@ class Session
 
     public function delete(): void
     {
-        /** for some reason deleteAsync doesn't work in destructor */
+        //for some reason deleteAsync doesn't work in destructor
         $this->driver->getClient()->delete($this->basePath);
     }
 
     public function getCurrentUrl(): string
     {
         $res = $this->driver->getClient()->get($this->basePath . '/url');
+
+        Helper::assertStatusCode($res, [200]);
+
         return Helper::decodeJsonResponse($res)['value'];
     }
 
     public function navigateTo(string $url): void
     {
-        $this->driver->getClient()->post($this->basePath . '/url', ['body' => json_encode(['url' => $url])]);
+        $res = $this->driver->getClient()->post($this->basePath . '/url', ['body' => json_encode(['url' => $url])]);
+
+        Helper::assertStatusCode($res, [200]);
     }
 
-    public function findElement(LocatorStrategyInterface $ls): ?Element
+
+    public function execute(Script $script): mixed
     {
-        $res = $this->driver->getClient()->post($this->basePath . '/element', ['body' => json_encode($ls)]);
+        $res = $this->driver->getClient()->post($this->basePath . '/execute/sync', ['body' => json_encode($script)]);
 
-        if ($res->getStatusCode() == 404) {
-            return null;
-        }
+        Helper::assertStatusCode($res, [200]);
 
-        $elem = Helper::decodeJsonResponse($res)['value'];
-
-        return new Element($this->driver, $this->sessionId, current($elem));
-    }
-
-    /**
-     * @return Element[]
-     */
-    public function findElements(LocatorStrategyInterface $ls): array
-    {
-        $res = $this->driver->getClient()->post($this->basePath . '/elements', ['body' => json_encode($ls)]);
-
-        $data = Helper::decodeJsonResponse($res);
-        $out = [];
-        foreach ($data['value'] as $elem) {
-            $out[] = new Element($this->driver, $this->sessionId, current($elem));
-        }
-
-        return $out;
-    }
-
-    public function execute(Script $sc): mixed
-    {
-        $res = $this->driver->getClient()->post($this->basePath . '/execute/sync', ['body' => json_encode($sc)]);
+        return Helper::decodeJsonResponse($res)['value'];
     }
 
     /**
-     * @return string|SplFileObject return PNG in non-urlsafe base64 or SplFileObject if $filename set
+     * it's promise like. The last argument work same as resolve callback in promise
      */
-    public function screenshot(?string $filename = null): string|SplFileObject
+    public function executeAsync(Script $script): mixed
     {
-        $res = $this->driver->getClient()->get($this->basePath . '/screenshot');
+        $res = $this->driver->getClient()->post($this->basePath . '/execute/async', ['body' => json_encode($script)]);
+
+        Helper::assertStatusCode($res, [200]);
+
+        return Helper::decodeJsonResponse($res)['value'];
+    }
+
+    public function print(?PrintProperties $printProperties = null, ?string $filename = null): string|SplFileObject|false
+    {
+        $res = $this->driver->getClient()->post($this->basePath . '/print', ['body' => json_encode($printProperties ?? new PrintProperties())]);
+
+        if ($res->getStatusCode() >= 400) {
+            return false;
+        }
+
         $data = Helper::decodeJsonResponse($res);
 
         if ($filename === null) {
