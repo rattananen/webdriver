@@ -8,7 +8,7 @@ class Capabilities implements \JsonSerializable
      * @param Capability[] $firstMatch
     */
     public function __construct(
-        public Capability $alwaysMatch,
+        public Capability $alwaysMatch = new  Capability(),
         public array $firstMatch = []
         ){ 
     }

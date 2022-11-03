@@ -5,7 +5,7 @@ namespace Rattananen\Webdriver;
 use GuzzleHttp\Client;
 use Rattananen\Webdriver\Capability\Capabilities;
 
-interface DriverInterface
+interface LocalEndInterface
 {
     public function newSession(?Capabilities $capabilities = null): Session;
 

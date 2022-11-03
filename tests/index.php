@@ -1,7 +1,7 @@
 <?php
 require(__DIR__ . '/../vendor/autoload.php');
 
-use Rattananen\Webdriver\Drivers\GoogleChrome;
+use Rattananen\Webdriver\LocalEnds\GoogleChrome;
 use Rattananen\Webdriver\Entity\Rectangle;
 use Rattananen\Webdriver\Entity\Script;
 use Rattananen\Webdriver\Entity\PrintProperties;

@@ -4,9 +4,9 @@ namespace Rattananen\Webdriver;
 
 use GuzzleHttp\Client;
 
-abstract class DriverAbstract implements DriverInterface
+abstract class LocalEndAbstract implements LocalEndInterface
 {
-    use DriverTrait;
+    use LocalEndTrait;
 
     public function __construct(string $host = 'localhost:9515')
     {

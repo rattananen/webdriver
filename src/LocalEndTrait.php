@@ -5,7 +5,7 @@ namespace Rattananen\Webdriver;
 use GuzzleHttp\Client;
 use Rattananen\Webdriver\Capability\Capabilities;
 
-trait DriverTrait
+trait LocalEndTrait
 {
     private Client $client;
 

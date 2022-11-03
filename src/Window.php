@@ -9,7 +9,7 @@ class Window
     private string $basePath;
 
     public function __construct(
-        private DriverInterface $driver,
+        private LocalEndInterface $driver,
         private string $sessionId
     ) {
         $this->basePath = 'session/' . $this->sessionId . '/window';

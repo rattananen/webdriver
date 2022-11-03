@@ -1,8 +1,8 @@
 <?php
 
-namespace Rattananen\Webdriver\Drivers;
+namespace Rattananen\Webdriver\LocalEnds;
 
-use Rattananen\Webdriver\DriverAbstract;
+use Rattananen\Webdriver\LocalEndAbstract;
 use Rattananen\Webdriver\Capability\Capabilities;
 use Rattananen\Webdriver\Capability\Capability;
 use Rattananen\Webdriver\Entity\TimeoutsConfiguration;
@@ -11,7 +11,7 @@ use Rattananen\Webdriver\Entity\TimeoutsConfiguration;
 /** 
  * @final 
  */
-class GoogleChrome extends DriverAbstract
+class GoogleChrome extends LocalEndAbstract
 {
     public static function getDefaultCapabilities(): Capabilities
     {
