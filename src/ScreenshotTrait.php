@@ -6,14 +6,19 @@ use SplFileObject;
 
 trait ScreenshotTrait
 {
+
+    abstract public function getBasePath(): string;
+
+    abstract public function getDriver(): LocalEndInterface;
+
     /**
      * @return SplFileObject|string|false return PNG in non-urlsafe base64 or SplFileObject if $filename set or false if error
      */
     public function screenshot(?string $filename = null): SplFileObject|string|false
     {
-        $res = $this->driver->getClient()->get($this->basePath . '/screenshot');
+        $res = $this->getDriver()->getClient()->get($this->getBasePath() . '/screenshot');
 
-        // let client decide that should they stop or not.
+        // let user decide that should they stop or not.
         if ($res->getStatusCode() >= 400) {
             return false;
         }

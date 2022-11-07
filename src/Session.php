@@ -23,6 +23,16 @@ class Session
         $this->window = new Window($this->driver, $this->sessionId);
     }
 
+    public function getBasePath(): string
+    {
+        return $this->basePath;
+    }
+
+    public function getDriver(): LocalEndInterface
+    {
+        return $this->driver;
+    }
+
     public function __destruct()
     {
         $this->delete();
@@ -38,7 +48,7 @@ class Session
     {
         $res = $this->driver->getClient()->get($this->basePath . '/url');
 
-        Helper::assertStatusCode($res, [200]);
+        Helper::assertStatusCode($res, 200);
 
         return Helper::decodeJsonResponse($res)['value'];
     }
@@ -47,7 +57,7 @@ class Session
     {
         $res = $this->driver->getClient()->post($this->basePath . '/url', ['body' => json_encode(['url' => $url])]);
 
-        Helper::assertStatusCode($res, [200]);
+        Helper::assertStatusCode($res, 200);
     }
 
 
@@ -55,7 +65,7 @@ class Session
     {
         $res = $this->driver->getClient()->post($this->basePath . '/execute/sync', ['body' => json_encode($script)]);
 
-        Helper::assertStatusCode($res, [200]);
+        Helper::assertStatusCode($res, 200);
 
         return Helper::decodeJsonResponse($res)['value'];
     }
@@ -67,7 +77,7 @@ class Session
     {
         $res = $this->driver->getClient()->post($this->basePath . '/execute/async', ['body' => json_encode($script)]);
 
-        Helper::assertStatusCode($res, [200]);
+        Helper::assertStatusCode($res, 200);
 
         return Helper::decodeJsonResponse($res)['value'];
     }

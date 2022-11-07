@@ -47,23 +47,31 @@
 
 <body>
 
-    <h2>Media Queries</h2>
-    <p>Resize the browser window.</p>
-
-    <p>Make sure you reach the breakpoint at 800px when resizing this frame.</p>
+    <h1>JS</h1>
 
     <div class="left">
         Left Menu
     </div>
-
     <div class="main">
-        Main Content with image
-        <img class="broken-img" src="assets/none.png"/>
+        loading
     </div>
-
     <div class="right">
         Right Content
     </div>
+    <script type="text/javascript">
+        //slow javscript
+        window.setTimeout(() => {
+            document.querySelector(".main").innerHTML = '<img clss="common-img" src="assets/400x150.png"/>';
+        }, 2200);
+    </script>
+    <script type="text/javascript">
+        class TestJs {
+            sum(...nums) {
+                return nums.reduce((acc, current) => { return acc + current; }, 0);
+            }
+        }
+        window.TestJs = new TestJs();
+    </script>
 </body>
 
 </html>

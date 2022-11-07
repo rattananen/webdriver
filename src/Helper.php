@@ -15,15 +15,12 @@ class Helper
         return json_decode($response->getBody()->getContents(), true);
     }
 
-    /**
-     * @param array<int> $codes
-    */
-    public static function assertStatusCode(ResponseInterface $response, array $codes): void
+    public static function assertStatusCode(ResponseInterface $response,  int ...$codes): void
     {
         if (in_array($response->getStatusCode(), $codes)) {
             return;
         }
         
-        throw new WebdriverException(sprintf("%s %s", $response->getStatusCode(), $response->getReasonPhrase()));
+        throw new WebdriverException(sprintf("HTTP code=%s, %s", $response->getStatusCode(), $response->getReasonPhrase()));
     }
 }

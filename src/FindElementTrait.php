@@ -6,11 +6,16 @@ use Rattananen\Webdriver\LocatorStrategy\LocatorStrategyInterface;
 
 trait FindElementTrait
 {
+
+    abstract public function getBasePath(): string;
+
+    abstract public function getDriver(): LocalEndInterface;
+
     public function findElement(LocatorStrategyInterface $locator): ?Element
     { 
-        $res = $this->driver->getClient()->post($this->basePath . '/element', ['body' => json_encode($locator)]);
+        $res = $this->getDriver()->getClient()->post($this->getBasePath() . '/element', ['body' => json_encode($locator)]);
 
-        Helper::assertStatusCode($res, [200, 404]);
+        Helper::assertStatusCode($res, 200, 404);
 
         if ($res->getStatusCode() == 404) {
             return null;
@@ -26,9 +31,9 @@ trait FindElementTrait
      */
     public function findElements(LocatorStrategyInterface $locator): array
     {
-        $res = $this->driver->getClient()->post($this->basePath . '/elements', ['body' => json_encode($locator)]);
+        $res = $this->getDriver()->getClient()->post($this->getBasePath() . '/elements', ['body' => json_encode($locator)]);
 
-        Helper::assertStatusCode($res, [200]);
+        Helper::assertStatusCode($res, 200);
 
         $data = Helper::decodeJsonResponse($res);
 

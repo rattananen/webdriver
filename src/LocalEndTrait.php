@@ -7,23 +7,19 @@ use Rattananen\Webdriver\Capability\Capabilities;
 
 trait LocalEndTrait
 {
-    private Client $client;
+
+    abstract public function getClient(): Client;
 
     public function newSession(?Capabilities $capabilities = null): Session
     {
-        $res = $this->client->post('session', ['body' => json_encode($capabilities ?? static::getDefaultCapabilities())]);
+        $res = $this->getClient()->post('session', ['body' => json_encode($capabilities ?? static::getDefaultCapabilities())]);
         $data = Helper::decodeJsonResponse($res);
         return new Session($this, $data['value']['sessionId']);
     }
 
     public function status(): int
     {
-        return Helper::decodeJsonResponse($this->client->get('status'))['value']['ready'] ;
-    }
-
-    public function getClient(): Client
-    {
-        return $this->client;
+        return Helper::decodeJsonResponse($this->getClient()->get('status'))['value']['ready'] ;
     }
 
 }

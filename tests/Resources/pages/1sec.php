@@ -1,3 +1,6 @@
+<?php
+sleep(1);
+?>
 <!DOCTYPE html>
 <html>
 
@@ -46,12 +49,7 @@
 </head>
 
 <body>
-
-    <h2>Media Queries</h2>
-    <p>Resize the browser window.</p>
-
-    <p>Make sure you reach the breakpoint at 800px when resizing this frame.</p>
-
+    <h1>1 second</h1>
     <div class="left">
         Left Menu
     </div>
@@ -64,9 +62,5 @@
     <div class="right">
         Right Content
     </div>
-
-    <img clss="big-img" src="assets/1920x1080.png"/>
-
 </body>
-
 </html>

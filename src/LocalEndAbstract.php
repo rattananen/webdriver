@@ -8,6 +8,8 @@ abstract class LocalEndAbstract implements LocalEndInterface
 {
     use LocalEndTrait;
 
+    private Client $client;
+
     public function __construct(string $host = 'localhost:9515')
     {
         $this->client = new Client([
@@ -15,5 +17,10 @@ abstract class LocalEndAbstract implements LocalEndInterface
             'http_errors' => false,
             'headers' => ['Content-Type' => 'application/json']
         ]);
+    }
+
+    public function getClient(): Client
+    {
+        return $this->client;
     }
 }
