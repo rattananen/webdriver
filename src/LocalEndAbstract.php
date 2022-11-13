@@ -3,6 +3,8 @@
 namespace Rattananen\Webdriver;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ConnectException;
+use Rattananen\Webdriver\Exception\WebdriverException;
 
 abstract class LocalEndAbstract implements LocalEndInterface
 {
@@ -17,6 +19,12 @@ abstract class LocalEndAbstract implements LocalEndInterface
             'http_errors' => false,
             'headers' => ['Content-Type' => 'application/json']
         ]);
+
+        try {
+            $this->status();
+        } catch (ConnectException $e) {
+            throw new WebdriverException("Cann't connect http://$host.");
+        }
     }
 
     public function getClient(): Client

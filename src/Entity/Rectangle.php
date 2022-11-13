@@ -22,8 +22,8 @@ class Rectangle implements \JsonSerializable
         ];
     }
 
-    public static function fromArray(array $a): static
+    public static function fromArray(array $data): static
     {
-        return new static($a['x'], $a['y'], $a['width'], $a['height']);
+        return new static($data['x'], $data['y'], $data['width'], $data['height']);
     }
 }

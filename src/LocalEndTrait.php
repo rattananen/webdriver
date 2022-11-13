@@ -4,6 +4,8 @@ namespace Rattananen\Webdriver;
 
 use GuzzleHttp\Client;
 use Rattananen\Webdriver\Capability\Capabilities;
+use Rattananen\Webdriver\Entity\DriverStatusInterface;
+use Rattananen\Webdriver\Entity\DriverStatus;
 
 trait LocalEndTrait
 {
@@ -17,9 +19,11 @@ trait LocalEndTrait
         return new Session($this, $data['value']['sessionId']);
     }
 
-    public function status(): int
+    public function status(): DriverStatusInterface
     {
-        return Helper::decodeJsonResponse($this->getClient()->get('status'))['value']['ready'] ;
+        $data = Helper::decodeJsonResponse($this->getClient()->get('status'));
+       
+        return DriverStatus::fromArray($data['value']);
     }
 
 }
