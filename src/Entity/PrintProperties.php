@@ -15,7 +15,7 @@ class PrintProperties implements \JsonSerializable
         public float $scale = 1,
         public bool $shrinkToFit = true,
         public bool $background = true,
-        public array $pageRanges = []
+        public array $pageRanges = []//TODO
     ) {
     }
 

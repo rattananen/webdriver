@@ -19,7 +19,7 @@ class GoogleChrome extends LocalEndAbstract
         $caps->alwaysMatch = new Capability();
         $caps->alwaysMatch->browserName = 'chrome';
         $caps->alwaysMatch->timeouts = new TimeoutsConfiguration();
-        $caps->alwaysMatch->extraOptions['goog:chromeOptions'] = [
+        $caps->alwaysMatch->browserOptions['goog:chromeOptions'] = [
             'args' => [
                 // auto debug port
                 //'--remote-debugging-port=0',

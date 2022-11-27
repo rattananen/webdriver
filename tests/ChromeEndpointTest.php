@@ -2,18 +2,16 @@
 
 namespace Rattananen\Webdriver\Tests;
 
-use PHPUnit\Framework\TestCase;
 use Rattananen\Webdriver\LocalEnds\GoogleChrome;
-use Rattananen\Webdriver\Tests\Utils\EndpointTestTrait;
+use Rattananen\Webdriver\Tests\Utils\EndpointTestAbstract;
 use Rattananen\Webdriver\LocalEndInterface;
 
-class ChromeEndpointTest extends TestCase
+class ChromeEndpointTest extends EndpointTestAbstract
 {
-    use EndpointTestTrait;
     private LocalEndInterface $driver;
     public function setUp(): void
     {
-        $this->driver = new GoogleChrome();
+        $this->driver = new GoogleChrome('localhost:9515');
     }
 
     public function getDriver(): LocalEndInterface

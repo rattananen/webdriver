@@ -15,24 +15,24 @@ class Capability implements \JsonSerializable
 
     public bool $acceptInsecureCerts = true;
 
-    public array $extraOptions = [];
+    public array $browserOptions = [];
 
     public function jsonSerialize(): mixed
     {
         $out = [];
         //Reflection Class is consume more resource don't use them often
-        foreach (static::getClassMetaData() as $k) {
+        foreach (static::getClassMeta() as $k) {
             if (isset($this->{$k})) {
                 $out[$k] = $this->{$k};
             }
         }
 
-        $out += $this->extraOptions;
+        $out += $this->browserOptions;
         return $out;
     }
 
   
-    public static function getClassMetaData(): array
+    public static function getClassMeta(): array
     {
         return [
             'browserName',

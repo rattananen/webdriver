@@ -47,24 +47,31 @@
 
 <body>
 
-    <h1>images </h1>
+    <h1>JS</h1>
 
     <div class="left">
         Left Menu
     </div>
-
     <div class="main">
-        Main Content with image
-        <img clss="common-img" src="assets/400x150.png"/>
+        loading
     </div>
-
     <div class="right">
         Right Content
-        <img class="broken-img" src="assets/none.png" title="broken image"/>
     </div>
-
-    <img clss="big-img" src="assets/1920x1080.png"/>
-
+    <script type="text/javascript">
+        //slow javscript
+        window.setTimeout(() => {
+            document.querySelector(".main").innerHTML = '<img clss="common-img" src="400x150.png"/>';
+        }, 2200);
+    </script>
+    <script type="text/javascript">
+        class TestJs {
+            sum(...nums) {
+                return nums.reduce((acc, current) => { return acc + current; }, 0);
+            }
+        }
+        window.TestJs = new TestJs();
+    </script>
 </body>
 
 </html>
