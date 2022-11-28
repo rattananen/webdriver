@@ -43,7 +43,9 @@ abstract class EndpointTestAbstract extends TestCase
         static::$serverProcess->stop();
     }
 
-
+    /**
+     * start local end test
+    */
     public function testNewSession(): void
     {
         $session = $this->getDriver()->newSession();
@@ -57,10 +59,11 @@ abstract class EndpointTestAbstract extends TestCase
 
         $this->assertInstanceOf(DriverStatusInterface::class, $status);
     }
-    /*-end local end test-*/
 
 
     /**
+     * start session test 
+     * 
      * @doesNotPerformAssertions
      */
     public function testDelete(): void
@@ -95,9 +98,10 @@ abstract class EndpointTestAbstract extends TestCase
     
         $this->assertEquals(10, $result);
     }
-    /*-end session end test-*/
-
-
+  
+    /**
+     * start window test
+    */
     public function testRect(): void
     {
         $session = $this->getDriver()->newSession();
@@ -111,5 +115,4 @@ abstract class EndpointTestAbstract extends TestCase
         $this->assertEquals(1024, $rect->width);
         $this->assertEquals(768, $rect->height);
     }
-    /*-end window end test-*/
 }
