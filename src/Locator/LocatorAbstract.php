@@ -1,10 +1,10 @@
 <?php
 
-namespace Rattananen\Webdriver\LocatorStrategy;
+namespace Rattananen\Webdriver\Locator;
 
-abstract class LocatorStrategyAbstract implements LocatorStrategyInterface
+abstract class LocatorAbstract implements LocatorInterface
 {
-    use LocatorStrategyTrait;
+    use LocatorTrait;
 
     public function __construct(public string $value)
     {

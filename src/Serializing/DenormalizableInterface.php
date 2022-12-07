@@ -1,6 +1,6 @@
 <?php
 
-namespace Rattananen\Webdriver\Serializing;
+namespace Rattananen\Webdriver\Serialize;
 
 interface DenormalizableInterface
 {

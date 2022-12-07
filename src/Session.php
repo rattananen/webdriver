@@ -70,6 +70,14 @@ class Session
         return Helper::decodeJsonResponse($res)['value'];
     }
 
+      /**
+     * shorthand for execute()
+    */
+    public function js(string $script, array $args = []): mixed
+    {
+        return $this->execute(new Script($script, $args));
+    }
+
     /**
      * it's promise like. The last argument work same as resolve callback in promise
      */
@@ -82,22 +90,28 @@ class Session
         return Helper::decodeJsonResponse($res)['value'];
     }
 
-    public function print(?PrintProperties $printProperties = null, ?string $filename = null): string|SplFileObject|false
+     /**
+     * shorthand for executeAsync()
+    */
+    public function jsAsync(string $script, array $args = []): mixed
+    {
+        return $this->executeAsync(new Script($script, $args));
+    }
+
+    public function print(?PrintProperties $printProperties = null): string
     {
         $res = $this->driver->getClient()->post($this->basePath . '/print', ['body' => json_encode($printProperties ?? new PrintProperties())]);
 
-        if ($res->getStatusCode() >= 400) {
-            return false;
-        }
+        Helper::assertStatusCode($res, 200);
 
-        $data = Helper::decodeJsonResponse($res);
+        return Helper::decodeJsonResponse($res)['value'];
+    }
 
-        if ($filename === null) {
-            return $data['value'];
-        }
-
+    public function printTo(string $filename, ?PrintProperties $printProperties = null): SplFileObject
+    {
         $file = new SplFileObject($filename, 'w');
-        $file->fwrite(base64_decode($data['value']));
+        $file->fwrite(base64_decode($this->print($printProperties)));
+
         return $file;
     }
 }

@@ -16,7 +16,6 @@ abstract class EndpointTestAbstract extends TestCase
 {
     abstract public function getDriver(): LocalEndInterface;
 
-
     public static Process $serverProcess;
 
     public static string $webhost = 'localhost:8878';
@@ -45,11 +44,11 @@ abstract class EndpointTestAbstract extends TestCase
 
     /**
      * start local end test
-    */
+     */
     public function testNewSession(): void
     {
         $session = $this->getDriver()->newSession();
-        
+
         $this->assertInstanceOf(Session::class, $session);
     }
 
@@ -73,10 +72,10 @@ abstract class EndpointTestAbstract extends TestCase
         $session->delete();
     }
 
-    public function testNavigate():void
+    public function testNavigate(): void
     {
         $session = $this->getDriver()->newSession();
-        $url = 'http://'.static::$webhost.'/img.html';
+        $url = 'http://' . static::$webhost . '/img.html';
         $session->navigateTo($url);
 
         $result = $session->getCurrentUrl();
@@ -84,24 +83,31 @@ abstract class EndpointTestAbstract extends TestCase
         $this->assertEquals($url, $result);
     }
 
-    public function testSimpleJavascript():void
+    public function testSimpleJavascript(): void
     {
         $session = $this->getDriver()->newSession();
-        $url = 'http://'.static::$webhost.'/js.html';
+        $url = 'http://' . static::$webhost . '/js.html';
         $session->navigateTo($url);
 
         $result = $session->execute(new Script('const [a, b] = arguments;return a+b;', [4, 6]));
-        
+
         $this->assertEquals(10, $result);
 
         $result = $session->executeAsync(new Script('const [a, b, c, d, resolve] = arguments;resolve(window.TestJs.sum(a, b, c, d));', [1, 2, 3, 4]));
-    
+
         $this->assertEquals(10, $result);
     }
-  
+
+    public function testPrint(): void
+    {
+        $session = $this->getDriver()->newSession();
+        $url = 'http://' . static::$webhost . '/common.html';
+        $session->navigateTo($url);
+    }
+
     /**
      * start window test
-    */
+     */
     public function testRect(): void
     {
         $session = $this->getDriver()->newSession();

@@ -11,26 +11,19 @@ trait ScreenshotTrait
 
     abstract public function getDriver(): LocalEndInterface;
 
-    /**
-     * @return SplFileObject|string|false return PNG in non-urlsafe base64 or SplFileObject if $filename set or false if error
-     */
-    public function screenshot(?string $filename = null): SplFileObject|string|false
+    public function screenshot(): string
     {
         $res = $this->getDriver()->getClient()->get($this->getBasePath() . '/screenshot');
 
-        // let user decide that should they stop or not.
-        if ($res->getStatusCode() >= 400) {
-            return false;
-        }
+        Helper::assertStatusCode($res, 200);
 
-        $data = Helper::decodeJsonResponse($res);
+        return Helper::decodeJsonResponse($res)['value'];
+    }
 
-        if ($filename === null) {
-            return $data['value'];
-        }
-
+    public function screenshotTo(string $filename): SplFileObject
+    {
         $file = new SplFileObject($filename, 'w');
-        $file->fwrite(base64_decode($data['value']));
+        $file->fwrite(base64_decode($this->screenshot()));
         return $file;
     }
 }

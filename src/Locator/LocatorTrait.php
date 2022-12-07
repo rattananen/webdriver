@@ -1,8 +1,8 @@
 <?php
 
-namespace Rattananen\Webdriver\LocatorStrategy;
+namespace Rattananen\Webdriver\Locator;
 
-trait LocatorStrategyTrait
+trait LocatorTrait
 {
     public function jsonSerialize(): mixed
     {
