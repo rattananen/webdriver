@@ -1,6 +1,6 @@
 <?php
 
-namespace Rattananen\Webdriver\Entity;
+namespace Rattananen\Webdriver\Types;
 
 enum PrintOrientation: string
 {

@@ -1,6 +1,8 @@
 <?php
 
-namespace Rattananen\Webdriver\Locator;
+namespace Rattananen\Webdriver\Locator\Locators;
+
+use Rattananen\Webdriver\Locator\LocatorAbstract;
 
 class Xpath extends LocatorAbstract
 {

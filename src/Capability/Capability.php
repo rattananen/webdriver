@@ -19,26 +19,15 @@ class Capability implements \JsonSerializable
 
     public function jsonSerialize(): mixed
     {
-        $out = [];
-        //Reflection Class is consume more resource don't use them often
-        foreach (static::getClassMeta() as $k) {
-            if (isset($this->{$k})) {
-                $out[$k] = $this->{$k};
-            }
-        }
+
+        $out = [
+            'browserName' => $this->browserName,
+            'platformName' =>  $this->platformName,
+            'timeouts' =>  $this->timeouts,
+            'acceptInsecureCerts' =>  $this->acceptInsecureCerts,
+        ];
 
         $out += $this->browserOptions;
         return $out;
-    }
-
-  
-    public static function getClassMeta(): array
-    {
-        return [
-            'browserName',
-            'platformName',
-            'timeouts',
-            'acceptInsecureCerts'
-        ];
     }
 }
