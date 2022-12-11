@@ -9,7 +9,7 @@ class Capability implements \JsonSerializable
 
     public string $browserName;
 
-    public string $platformName;
+    public ?string $platformName;
 
     public TimeoutsConfiguration $timeouts;
 
@@ -19,13 +19,15 @@ class Capability implements \JsonSerializable
 
     public function jsonSerialize(): mixed
     {
-
         $out = [
             'browserName' => $this->browserName,
-            'platformName' =>  $this->platformName,
             'timeouts' =>  $this->timeouts,
             'acceptInsecureCerts' =>  $this->acceptInsecureCerts,
         ];
+
+        if(isset($this->platformName)){
+            $out['platformName'] = $this->platformName;
+        }
 
         $out += $this->browserOptions;
         return $out;

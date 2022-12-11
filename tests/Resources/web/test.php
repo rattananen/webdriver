@@ -22,17 +22,17 @@ $session = $driver->newSession();
 
 $session->window->setRect(new Rectangle(0, 0, 1600, 900));
 
-$url = 'http://google.com';
+$url = 'http://localhost:8877/common.html';
 
 $session->navigateTo($url);
 
-//print $session->getCurrentUrl();
+print $session->getCurrentUrl();
 
 
 //$elem = $session->findElement(new CssSelector('.banner-slider--item .banner-slider--image'));
 
 //if (isset($elem)) {
-    $session->print(null, __DIR__ . '/cap/' . bin2hex(random_bytes(8)) . '.pdf');
+    $session->printTo(__DIR__ . '/cap/' . bin2hex(random_bytes(8)) . '.pdf');
 //}
 
 // $result = $session->execute(new Script('return [...arguments].reduce((acc, value)=> { return acc + value}, 0);', [1, 2, 3]));

@@ -8,9 +8,6 @@ use Symfony\Component\Process\Process;
 use Rattananen\Webdriver\LocalEndInterface;
 use Rattananen\Webdriver\Session;
 use Rattananen\Webdriver\Entity\DriverStatusInterface;
-use Rattananen\Webdriver\Entity\Rectangle;
-use Rattananen\Webdriver\Entity\Script;
-
 
 abstract class EndpointTestAbstract extends TestCase
 {
@@ -89,11 +86,11 @@ abstract class EndpointTestAbstract extends TestCase
         $url = 'http://' . static::$webhost . '/js.html';
         $session->navigateTo($url);
 
-        $result = $session->execute(new Script('const [a, b] = arguments;return a+b;', [4, 6]));
+        $result = $session->js('const [a, b] = arguments;return a+b;', [4, 6]);
 
         $this->assertEquals(10, $result);
 
-        $result = $session->executeAsync(new Script('const [a, b, c, d, resolve] = arguments;resolve(window.TestJs.sum(a, b, c, d));', [1, 2, 3, 4]));
+        $result = $session->jsAsync('const [a, b, c, d, resolve] = arguments;resolve(window.TestJs.sum(a, b, c, d));', [1, 2, 3, 4]);
 
         $this->assertEquals(10, $result);
     }
@@ -103,6 +100,7 @@ abstract class EndpointTestAbstract extends TestCase
         $session = $this->getDriver()->newSession();
         $url = 'http://' . static::$webhost . '/common.html';
         $session->navigateTo($url);
+        
     }
 
     /**
@@ -112,7 +110,7 @@ abstract class EndpointTestAbstract extends TestCase
     {
         $session = $this->getDriver()->newSession();
 
-        $session->window->setRect(new Rectangle(1, 2, 1024, 768));
+        $session->window->rect(1, 2, 1024, 768);
 
         $rect = $session->window->getRect();
 
