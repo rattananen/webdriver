@@ -56,7 +56,7 @@ sleep(1);
 
     <div class="main">
         Main Content with image
-        <img src="400x150.png"/>
+        <img class="common-img" src="400x150.png"/>
     </div>
 
     <div class="right">

@@ -21,6 +21,19 @@ class Helper
             return;
         }
         
-        throw new WebdriverException(sprintf("HTTP code=%s, %s", $response->getStatusCode(), $response->getReasonPhrase()));
+        $data = json_decode($response->getBody()->getContents(), true);
+
+        throw new WebdriverException(sprintf("HTTP code=%s, %s", $response->getStatusCode(), $data['value']['message']));
+    }
+
+    public static function assertAndGetValue(ResponseInterface $response,  int ...$codes):mixed
+    {
+        $data = json_decode($response->getBody()->getContents(), true);
+
+        if (!in_array($response->getStatusCode(), $codes)) {
+            throw new WebdriverException(sprintf("HTTP code=%s, %s", $response->getStatusCode(), $data['value']['message']));
+        }
+        
+        return $data['value'];
     }
 }

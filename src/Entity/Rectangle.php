@@ -5,10 +5,10 @@ namespace Rattananen\Webdriver\Entity;
 class Rectangle implements \JsonSerializable
 {
     public function __construct(
-        public ?int $x,
-        public ?int $y,
-        public ?int $width,
-        public ?int $height
+        public ?float $x,
+        public ?float $y,
+        public ?float $width,
+        public ?float $height
     ) {
     }
 

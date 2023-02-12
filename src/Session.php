@@ -4,7 +4,6 @@ namespace Rattananen\Webdriver;
 
 use Rattananen\Webdriver\Entity\Script;
 use Rattananen\Webdriver\Entity\PrintProperties;
-use SplFileObject;
 
 class Session
 {
@@ -16,7 +15,7 @@ class Session
 
     public function __construct(
         private LocalEndInterface $driver,
-        private string $sessionId
+        public readonly string $sessionId
     ) {
         $this->basePath = 'session/' . $this->sessionId;
 
@@ -40,7 +39,7 @@ class Session
 
     public function delete(): void
     {
-        //for some reason deleteAsync doesn't work in destructor
+        //deleteAsync doesn't work in destructor. it might be PHP is terminate before deleteAsync done.
         $this->driver->getClient()->delete($this->basePath);
     }
 
@@ -48,9 +47,7 @@ class Session
     {
         $res = $this->driver->getClient()->get($this->basePath . '/url');
 
-        Helper::assertStatusCode($res, 200);
-
-        return Helper::decodeJsonResponse($res)['value'];
+        return Helper::assertAndGetValue($res, 200);
     }
 
     public function navigateTo(string $url): void
@@ -65,14 +62,12 @@ class Session
     {
         $res = $this->driver->getClient()->post($this->basePath . '/execute/sync', ['body' => json_encode($script)]);
 
-        Helper::assertStatusCode($res, 200);
-
-        return Helper::decodeJsonResponse($res)['value'];
+        return Helper::assertAndGetValue($res, 200);
     }
 
-      /**
+    /**
      * shorthand for execute()
-    */
+     */
     public function js(string $script, array $args = []): mixed
     {
         return $this->execute(new Script($script, $args));
@@ -85,14 +80,12 @@ class Session
     {
         $res = $this->driver->getClient()->post($this->basePath . '/execute/async', ['body' => json_encode($script)]);
 
-        Helper::assertStatusCode($res, 200);
-
-        return Helper::decodeJsonResponse($res)['value'];
+        return Helper::assertAndGetValue($res, 200);
     }
 
-     /**
+    /**
      * shorthand for executeAsync()
-    */
+     */
     public function jsAsync(string $script, array $args = []): mixed
     {
         return $this->executeAsync(new Script($script, $args));
@@ -102,16 +95,25 @@ class Session
     {
         $res = $this->driver->getClient()->post($this->basePath . '/print', ['body' => json_encode($printProperties ?? new PrintProperties())]);
 
-        Helper::assertStatusCode($res, 200);
-
-        return Helper::decodeJsonResponse($res)['value'];
+        return Helper::assertAndGetValue($res, 200);
     }
 
-    public function printTo(string $filename, ?PrintProperties $printProperties = null): SplFileObject
+    public function printTo(string $filename, ?PrintProperties $printProperties = null): \SplFileObject
     {
-        $file = new SplFileObject($filename, 'w');
-        $file->fwrite(base64_decode($this->print($printProperties)));
+        $bin = base64_decode($this->print($printProperties));
 
+        $file = new \SplFileObject($filename, 'w');
+        $file->fwrite($bin);
         return $file;
+    }
+
+    /**
+     * @return string page source normalized by browser
+    */
+    public function getPageSource(): string
+    {
+        $res = $this->driver->getClient()->get($this->basePath . '/source');
+
+        return Helper::assertAndGetValue($res, 200);
     }
 }

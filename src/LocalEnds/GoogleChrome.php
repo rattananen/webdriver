@@ -44,7 +44,7 @@ class GoogleChrome extends LocalEndAbstract
                 // password settings
                 '--password-store=basic',
                 '--use-mock-keychain', // osX only
-                '--headless',
+                //'--headless',
                 '--disable-gpu',
                 '--disable-crash-reporter',
                 '--font-render-hinting=none',

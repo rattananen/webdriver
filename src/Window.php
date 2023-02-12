@@ -15,18 +15,17 @@ class Window
         $this->basePath = 'session/' . $this->sessionId . '/window';
     }
 
-
-
     public function getRect(): Rectangle
     {
         $res = $this->driver->getClient()->get($this->basePath . '/rect');
 
-        return Rectangle::fromArray(Helper::decodeJsonResponse($res)['value']);
+        return Rectangle::fromArray(Helper::assertAndGetValue($res, 200));
     }
 
     public function setRect(Rectangle $rectangle): void
     {
-        $this->driver->getClient()->post($this->basePath . '/rect', ['body' => json_encode($rectangle)]);
+        $res = $this->driver->getClient()->post($this->basePath . '/rect', ['body' => json_encode($rectangle)]);
+        Helper::assertStatusCode($res, 200);
     }
 
     /**
