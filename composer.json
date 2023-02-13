@@ -12,13 +12,16 @@
     ],
     "require": {
         "php": ">=8.1",
-        "guzzlehttp/guzzle": "^7.4.5",
         "psr/http-message": "^1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^9",
+        "guzzlehttp/guzzle": "^7.4.5",
         "symfony/var-dumper": "^6.1",
         "symfony/process": "^6.1"
+    },
+    "suggest": {
+        "guzzlehttp/guzzle": "client package for default client."
     },
     "autoload": {
         "psr-4": {

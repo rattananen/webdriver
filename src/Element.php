@@ -8,19 +8,19 @@ class Element
 {
     use ScreenshotTrait, FindElementTrait;
 
-    private string $basePath;
+    private string $baseUri;
 
     public function __construct(
         private LocalEndInterface $driver,
         public readonly string $sessionId,
         public readonly string $elementId
     ) {
-        $this->basePath = 'session/' . $this->sessionId . '/element/' . $this->elementId;
+        $this->baseUri = $this->driver->getBaseUri().'/session/' . $this->sessionId . '/element/' . $this->elementId;
     }
 
-    public function getBasePath(): string
+    public function getBaseUri(): string
     {
-        return $this->basePath;
+        return $this->baseUri;
     }
 
     public function getDriver(): LocalEndInterface
@@ -30,35 +30,35 @@ class Element
 
     public function getText(): string
     {
-        $res = $this->driver->getClient()->get($this->basePath . '/text');
+        $res = $this->driver->getClient()->get($this->baseUri . '/text');
 
         return Helper::assertAndGetValue($res,  200);
     }
 
     public function getTagName(): string
     {
-        $res = $this->driver->getClient()->get($this->basePath . '/name');
+        $res = $this->driver->getClient()->get($this->baseUri . '/name');
 
         return Helper::assertAndGetValue($res,  200);
     }
 
     public function getRect(): Rectangle
     {
-        $res = $this->driver->getClient()->get($this->basePath . '/rect');
+        $res = $this->driver->getClient()->get($this->baseUri . '/rect');
 
         return Rectangle::fromArray(Helper::assertAndGetValue($res, 200));
     }
 
     public function getAttribute(string $name): ?string
     {
-        $res = $this->driver->getClient()->get($this->basePath . '/attribute/' . $name);
+        $res = $this->driver->getClient()->get($this->baseUri . '/attribute/' . $name);
 
         return Helper::assertAndGetValue($res, 200);
     }
 
     public function getProperty(string $name): ?string
     {
-        $res = $this->driver->getClient()->get($this->basePath . '/property/' . $name);
+        $res = $this->driver->getClient()->get($this->baseUri . '/property/' . $name);
 
         return Helper::assertAndGetValue($res, 200);
     }
@@ -68,27 +68,27 @@ class Element
     */
     public function getCssValue(string $prop): string
     {
-        $res = $this->driver->getClient()->get($this->basePath . '/css/' . $prop);
+        $res = $this->driver->getClient()->get($this->baseUri . '/css/' . $prop);
 
         return Helper::assertAndGetValue($res, 200);
     }
 
     public function click(): void
     {
-        $res = $this->driver->getClient()->post($this->basePath . '/click', ['body' => '{}']);
+        $res = $this->driver->getClient()->post($this->baseUri . '/click');
         Helper::assertStatusCode($res, 200);
     }
 
     public function clear(): void
     {
-        $res = $this->driver->getClient()->post($this->basePath . '/clear', ['body' => '{}']);
+        $res = $this->driver->getClient()->post($this->baseUri . '/clear');
 
         Helper::assertStatusCode($res, 200);
     }
 
     public function sendKeys(string $keys): void
     {
-        $res = $this->driver->getClient()->post($this->basePath . '/value', ['body' => json_encode(['text' => $keys])]);
+        $res = $this->driver->getClient()->post($this->baseUri . '/value', ['text' => $keys]);
 
         Helper::assertStatusCode($res, 200);
     }

@@ -7,13 +7,13 @@ use SplFileObject;
 trait ScreenshotTrait
 {
 
-    abstract public function getBasePath(): string;
+    abstract public function getBaseUri(): string;
 
     abstract public function getDriver(): LocalEndInterface;
 
     public function screenshot(): string
     {
-        $res = $this->getDriver()->getClient()->get($this->getBasePath() . '/screenshot');
+        $res = $this->getDriver()->getClient()->get($this->getBaseUri() . '/screenshot');
 
         return Helper::assertAndGetValue($res, 200);
     }

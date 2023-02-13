@@ -7,8 +7,6 @@ use Rattananen\Webdriver\Input\InputSourceInterface;
 class Key implements InputSourceInterface
 {
 
-    
-
     public function getType(): string
     {
         return 'key';

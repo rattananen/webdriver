@@ -25,5 +25,4 @@ class DriverStatus implements DriverStatusInterface
     {
         return new static($data['message'], $data['ready']);
     }
-
 }

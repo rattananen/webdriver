@@ -2,33 +2,41 @@
 
 namespace Rattananen\Webdriver;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ConnectException;
 use Rattananen\Webdriver\Exception\WebdriverException;
 
 abstract class LocalEndAbstract implements LocalEndInterface
 {
     use LocalEndTrait;
 
-    private Client $client;
+    private ClientInterface $client;
 
-    public function __construct(string $host = 'localhost:9515')
-    {
-        $this->client = new Client([
-            'base_uri' => 'http://' . $host,
-            'http_errors' => false,
-            'headers' => ['Content-Type' => 'application/json']
-        ]);
+    private string $baseUri;
 
-        try {
-            $this->status();
-        } catch (ConnectException $e) {
-            throw new WebdriverException("Cann't connect http://$host.");
+    public function __construct(
+        string $host = 'localhost:9515',
+        bool $testConnection = true,
+        ?ClientInterface $client = null
+    ) {
+        $this->baseUri = 'http://' . $host;
+
+        $this->client = $client ?? new Client();
+
+        if ($testConnection) {
+            try {
+                $this->status();
+            } catch (\Throwable $th) {
+                throw new WebdriverException(sprintf("Error while connect %s.", $this->baseUri), 0, $th);
+            }
         }
     }
 
-    public function getClient(): Client
+    public function getClient(): ClientInterface
     {
         return $this->client;
+    }
+
+    public function getBaseUri(): string
+    {
+        return $this->baseUri;
     }
 }

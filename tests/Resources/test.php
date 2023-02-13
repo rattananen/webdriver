@@ -15,20 +15,20 @@ $driver = new GoogleChrome();
 
 $session = $driver->newSession();
 
-$session->window->rect(0, 0, 1600, 900);
+//$session->window->rect(0, 0, 1600, 900);
 
-$url = 'http://localhost:8877/input.html';
+//$url = 'http://localhost:8877/input.html';
 
-$session->navigateTo($url);
+//$session->navigateTo($url);
 
 //print $session->getCurrentUrl();
 
 //print $session->source();
-$elem = $session->find('.btn-test');
-sleep(3);
-$elem->click();
+//$elem = $session->find('.btn-test');
+//sleep(3);
+//$elem->click();
 
-sleep(5);
+//sleep(5);
 //dump($r);
 
 //$elem->screenshotTo(__DIR__ . '/web/cap/' . bin2hex(random_bytes(8)) . '.png');

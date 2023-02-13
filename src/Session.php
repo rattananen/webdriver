@@ -9,7 +9,7 @@ class Session
 {
     use FindElementTrait, ScreenshotTrait;
 
-    private string $basePath;
+    private string $baseUri;
 
     public readonly Window $window;
 
@@ -17,14 +17,14 @@ class Session
         private LocalEndInterface $driver,
         public readonly string $sessionId
     ) {
-        $this->basePath = 'session/' . $this->sessionId;
+        $this->baseUri = $this->driver->getBaseUri() . '/session/' . $this->sessionId;
 
         $this->window = new Window($this->driver, $this->sessionId);
     }
 
-    public function getBasePath(): string
+    public function getBaseUri(): string
     {
-        return $this->basePath;
+        return $this->baseUri;
     }
 
     public function getDriver(): LocalEndInterface
@@ -39,20 +39,19 @@ class Session
 
     public function delete(): void
     {
-        //deleteAsync doesn't work in destructor. it might be PHP is terminate before deleteAsync done.
-        $this->driver->getClient()->delete($this->basePath);
+        $this->driver->getClient()->delete($this->baseUri);
     }
 
     public function getCurrentUrl(): string
     {
-        $res = $this->driver->getClient()->get($this->basePath . '/url');
+        $res = $this->driver->getClient()->get($this->baseUri . '/url');
 
         return Helper::assertAndGetValue($res, 200);
     }
 
     public function navigateTo(string $url): void
     {
-        $res = $this->driver->getClient()->post($this->basePath . '/url', ['body' => json_encode(['url' => $url])]);
+        $res = $this->driver->getClient()->post($this->baseUri . '/url', ['url' => $url]);
 
         Helper::assertStatusCode($res, 200);
     }
@@ -60,7 +59,7 @@ class Session
 
     public function execute(Script $script): mixed
     {
-        $res = $this->driver->getClient()->post($this->basePath . '/execute/sync', ['body' => json_encode($script)]);
+        $res = $this->driver->getClient()->post($this->baseUri . '/execute/sync', $script);
 
         return Helper::assertAndGetValue($res, 200);
     }
@@ -78,7 +77,7 @@ class Session
      */
     public function executeAsync(Script $script): mixed
     {
-        $res = $this->driver->getClient()->post($this->basePath . '/execute/async', ['body' => json_encode($script)]);
+        $res = $this->driver->getClient()->post($this->baseUri . '/execute/async', $script);
 
         return Helper::assertAndGetValue($res, 200);
     }
@@ -93,7 +92,7 @@ class Session
 
     public function print(?PrintProperties $printProperties = null): string
     {
-        $res = $this->driver->getClient()->post($this->basePath . '/print', ['body' => json_encode($printProperties ?? new PrintProperties())]);
+        $res = $this->driver->getClient()->post($this->baseUri . '/print', ['body' => json_encode($printProperties ?? new PrintProperties())]);
 
         return Helper::assertAndGetValue($res, 200);
     }
@@ -109,10 +108,10 @@ class Session
 
     /**
      * @return string page source normalized by browser
-    */
+     */
     public function getPageSource(): string
     {
-        $res = $this->driver->getClient()->get($this->basePath . '/source');
+        $res = $this->driver->getClient()->get($this->baseUri . '/source');
 
         return Helper::assertAndGetValue($res, 200);
     }
