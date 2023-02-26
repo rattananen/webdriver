@@ -2,7 +2,6 @@
 
 namespace Rattananen\Webdriver;
 
-//use GuzzleHttp\Client;
 use Rattananen\Webdriver\Capability\Capabilities;
 use Rattananen\Webdriver\Entity\DriverStatusInterface;
 

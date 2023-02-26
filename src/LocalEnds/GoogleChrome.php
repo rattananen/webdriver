@@ -2,17 +2,20 @@
 
 namespace Rattananen\Webdriver\LocalEnds;
 
-use Rattananen\Webdriver\LocalEndAbstract;
+use Rattananen\Webdriver\LocalEndInterface;
+use Rattananen\Webdriver\LocalEndConstructTrait;
+use Rattananen\Webdriver\LocalEndTrait;
 use Rattananen\Webdriver\Capability\Capabilities;
 use Rattananen\Webdriver\Capability\Capability;
 use Rattananen\Webdriver\Entity\TimeoutsConfiguration;
 
-
 /** 
  * @final 
  */
-class GoogleChrome extends LocalEndAbstract
+class GoogleChrome implements LocalEndInterface
 {
+    use LocalEndConstructTrait, LocalEndTrait;
+
     public static function getDefaultCapabilities(): Capabilities
     {
         $caps = new Capabilities();
@@ -36,7 +39,7 @@ class GoogleChrome extends LocalEndAbstract
                 '--disable-extensions',
                 '--disable-features=ChromeWhatsNewUI',
                 
-                //'--disable-gpu-sandbox',
+                '--disable-gpu-sandbox',
                 '--metrics-recording-only',
                 '--no-first-run',
                 '--safebrowsing-disable-auto-update',
@@ -51,10 +54,11 @@ class GoogleChrome extends LocalEndAbstract
                 '--hide-scrollbars',
                 '--mute-audio',
                 '--no-sandbox',
-                //'--ignore-certificate-errors'
+                '--ignore-certificate-errors'
                 //'--user-data-dir='
             ]
         ];
+
         return $caps;
     }
 }

@@ -4,10 +4,8 @@ namespace Rattananen\Webdriver;
 
 use Rattananen\Webdriver\Exception\WebdriverException;
 
-abstract class LocalEndAbstract implements LocalEndInterface
+trait LocalEndConstructTrait
 {
-    use LocalEndTrait;
-
     private ClientInterface $client;
 
     private string $baseUri;

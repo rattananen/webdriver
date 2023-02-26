@@ -3,8 +3,9 @@
 namespace Rattananen\Webdriver;
 
 use Rattananen\Webdriver\Entity\Rectangle;
+use Rattananen\Webdriver\Types\W3C;
 
-class Element
+class Element implements \JsonSerializable
 {
     use ScreenshotTrait, FindElementTrait;
 
@@ -15,7 +16,7 @@ class Element
         public readonly string $sessionId,
         public readonly string $elementId
     ) {
-        $this->baseUri = $this->driver->getBaseUri().'/session/' . $this->sessionId . '/element/' . $this->elementId;
+        $this->baseUri = $this->driver->getBaseUri() . '/session/' . $this->sessionId . '/element/' . $this->elementId;
     }
 
     public function getBaseUri(): string
@@ -65,11 +66,11 @@ class Element
 
     /**
      * @return string css value computed by browser.
-    */
+     */
     public function getCssValue(string $prop): string
     {
         $res = $this->driver->getClient()->get($this->baseUri . '/css/' . $prop);
-
+        
         return Helper::assertAndGetValue($res, 200);
     }
 
@@ -82,15 +83,18 @@ class Element
     public function clear(): void
     {
         $res = $this->driver->getClient()->post($this->baseUri . '/clear');
-
         Helper::assertStatusCode($res, 200);
     }
 
     public function sendKeys(string $keys): void
     {
         $res = $this->driver->getClient()->post($this->baseUri . '/value', ['text' => $keys]);
-
         Helper::assertStatusCode($res, 200);
     }
 
+
+    public function jsonSerialize(): mixed
+    {
+        return [W3C::ELEMENT_IDENTIFIER => $this->elementId];
+    }
 }

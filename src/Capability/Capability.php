@@ -9,7 +9,7 @@ class Capability implements \JsonSerializable
 
     public string $browserName;
 
-    public ?string $platformName;
+    public ?string $platformName = null;
 
     public TimeoutsConfiguration $timeouts;
 

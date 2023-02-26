@@ -7,13 +7,65 @@
 
 <body>
     <h1>inputs </h1>
-    <textarea id="text-a"></textarea>
-    <br />
-    <button id="btn-test1" type="button" class="btn-test">click</button>
+    <button id="btn-test1" type="button" class="btn-test"
+        style="position: absolute;left: 10px;top: 10px;width: 100px;height: 30px;">W100 H30</button>
+    <button id="btn-test2" type="button" class="btn-test"
+        style="position: absolute;left: 110px;top: 10px;width: 70px;height: 30px;">W70 H30</button>
+    <br /><br />
+    <textarea cols="20" rows="3" id="text-a" autocomplete="off"></textarea>
+    <textarea cols="20" rows="3" id="text-kdown" autocomplete="off" readonly></textarea>
+    <textarea cols="20" rows="3" id="text-kup" autocomplete="off" readonly></textarea>
+    <textarea cols="20" rows="3" id="text-mousedown" autocomplete="off" readonly></textarea>
+    <textarea cols="20" rows="3" id="text-mouseup" autocomplete="off" readonly></textarea>
+    <textarea cols="20" rows="3" id="text-mousemove" autocomplete="off" readonly></textarea>
+    <textarea cols="20" rows="3" id="text-scroll" autocomplete="off" readonly></textarea>
+    <textarea cols="20" rows="5" id="text-long" autocomplete="off"
+        readonly>At lorem dolore blandit at et et sea eos nulla. Dolor sit sea vero assum et duo in et vel clita molestie. Est sed sea sed esse nonumy duis adipiscing nulla eirmod kasd eum et. Et lorem facilisis at accusam sed sit odio vero sit consetetur sadipscing labore invidunt eos praesent rebum augue eu. Clita ut vel magna. Labore amet amet nonumy no amet ex luptatum no dolor. Nulla sea est dolor. Ut commodo kasd ut te sanctus eros nulla sed diam vel gubergren at consetetur magna. Amet invidunt sanctus amet aliquyam amet et duis consetetur sit vero labore eirmod. Takimata sea sit dolore duis sit amet amet consetetur sed lorem gubergren veniam justo stet velit placerat eleifend accusam. Gubergren voluptua erat amet stet duo consequat consequat at et luptatum. Dolore justo labore est ea justo duis. Sit assum elitr nonummy dolores et nonumy sit voluptua nonumy. Eos stet elit lorem vel no. Nostrud feugait ea amet esse eu stet. Nonumy in ut wisi et eos amet dolor nibh vulputate no. Consequat sadipscing aliquyam.
+
+    Dolor facilisis elitr sed sed accusam et ea sit facilisi sanctus duis eum lorem adipiscing. Est magna et clita euismod eu zzril et dolor amet consetetur hendrerit. Magna magna veniam gubergren voluptua vulputate amet est elit ipsum odio dolore sit. Ex consetetur nulla lorem facilisi eu id dolore clita sit diam delenit lorem ea. Sanctus elitr voluptua sadipscing dolor. Et sed accumsan et dolore nonummy gubergren diam et nulla feugait vero takimata ea sed autem amet. Iusto vero ipsum sea et duis aliquyam lorem invidunt ut clita. Gubergren vero lorem tempor nonumy blandit duo erat. Tempor labore in sed ut justo invidunt rebum lorem sed facilisi sed invidunt accusam vero.</textarea>
+    <div style="height: 100vh;"></div>
+
+
     <script type="text/javascript">
         document.getElementById('btn-test1').addEventListener('click', (e) => {
             e.target.textContent = 'clicked';
         });
+        document.getElementById('btn-test2').addEventListener('click', (e) => {
+            e.target.textContent = 'clicked';
+        });
+
+        class TestPointer {
+            #kdown;
+            #kup;
+            #mouseup;
+            #mousedown;
+            #mousemove;
+            #scroll;
+            constructor() {
+                this.#kdown = document.querySelector('#text-kdown');
+                this.#kup = document.querySelector('#text-kup');
+
+                this.#mousedown = document.querySelector('#text-mousedown');
+                this.#mouseup = document.querySelector('#text-mouseup');
+                this.#mousemove = document.querySelector('#text-mousemove');
+                this.#scroll = document.querySelector('#text-scroll');
+                this.startCapture();
+            }
+
+            startCapture() {
+                window.addEventListener('keydown', (e) => { this.#kdown.value += e.key });
+                window.addEventListener('keyup', (e) => { this.#kup.value += e.key });
+
+                window.addEventListener('mousedown', (e) => { this.#mousedown.value += `B${e.button}x${e.x}y${e.y}ctrl${e.ctrlKey}`; });
+                window.addEventListener('mouseup', (e) => { this.#mouseup.value += `B${e.button}x${e.x}y${e.y}`; });
+                window.addEventListener('mousemove', (e) => { this.#mousemove.value = `x${e.x}y${e.y}`; });
+
+                window.addEventListener('scroll', (e) => { this.#scroll.value = `WINDOWx${window.scrollX}y${window.scrollY}` })
+
+                document.querySelector('#text-long').addEventListener('scroll', (e) => { this.#scroll.value = `TAREAx${e.target.scrollLeft}y${e.target.scrollTop}` });
+            }
+        }
+        window.TestPointer = new TestPointer();
     </script>
 </body>
 

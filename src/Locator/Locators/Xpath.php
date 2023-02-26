@@ -2,10 +2,13 @@
 
 namespace Rattananen\Webdriver\Locator\Locators;
 
-use Rattananen\Webdriver\Locator\LocatorAbstract;
+use Rattananen\Webdriver\Locator\LocatorInterface;
+use Rattananen\Webdriver\Locator\LocatorTrait;
 
-class Xpath extends LocatorAbstract
+class Xpath implements LocatorInterface
 {
+    use LocatorTrait;
+
     public function getUsing(): string
     {
         return 'xpath';

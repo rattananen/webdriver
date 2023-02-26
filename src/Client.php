@@ -8,6 +8,8 @@ use Psr\Http\Message\ResponseInterface;
 /**
  * default client
  * 
+ * @final
+ * 
  * @internal 
  *
  */

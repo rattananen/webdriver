@@ -4,12 +4,15 @@ namespace Rattananen\Webdriver;
 
 use Rattananen\Webdriver\Entity\Script;
 use Rattananen\Webdriver\Entity\PrintProperties;
+use Rattananen\Webdriver\Input\InputSourceInterface;
 
 class Session
 {
     use FindElementTrait, ScreenshotTrait;
 
     private string $baseUri;
+
+    private bool $deleted = false;
 
     public readonly Window $window;
 
@@ -34,12 +37,15 @@ class Session
 
     public function __destruct()
     {
-        $this->delete();
+        if (!$this->deleted) {
+            $this->delete();
+        }
     }
 
     public function delete(): void
     {
         $this->driver->getClient()->delete($this->baseUri);
+        $this->deleted = true;
     }
 
     public function getCurrentUrl(): string
@@ -114,5 +120,19 @@ class Session
         $res = $this->driver->getClient()->get($this->baseUri . '/source');
 
         return Helper::assertAndGetValue($res, 200);
+    }
+
+    public function performActions(InputSourceInterface ...$inputs): void
+    {
+        $res = $this->driver->getClient()->post($this->baseUri . '/actions', ['actions' => $inputs]);
+
+        Helper::assertAndGetValue($res, 200);
+    }
+
+    public function releaseActions(): void
+    {
+        $res = $this->driver->getClient()->delete($this->baseUri . '/actions');
+
+        Helper::assertAndGetValue($res, 200);
     }
 }
