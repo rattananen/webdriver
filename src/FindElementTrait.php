@@ -21,7 +21,7 @@ trait FindElementTrait
             return null;
         }
 
-        $value = Helper::assertAndGetValue($res, 200);
+        $value = Utils::getStatusOkValue($res);
 
         return new Element($this->driver, $this->sessionId, $value[W3C::ELEMENT_IDENTIFIER]);
     }
@@ -34,7 +34,7 @@ trait FindElementTrait
     {
         $res = $this->getDriver()->getClient()->post($this->getBaseUri() . '/elements', $locator);
 
-        $value = Helper::assertAndGetValue($res, 200);
+        $value = Utils::getStatusOkValue($res);
 
         $out = [];
 

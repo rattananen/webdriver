@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>alert page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body>
+    <h1>alert</h1>
+    <button id="alert-btn">alert</button>
+    <button id="confirm-btn">confirm</button>
+    <button id="prompt-btn">prompt</button>
+    <script type="text/javascript">
+        document
+            .getElementById('alert-btn')
+            .addEventListener('click', () => { alert('alert text'); });
+
+        document
+            .getElementById('confirm-btn')
+            .addEventListener('click', (e) => {
+                e.currentTarget.textContent = String(confirm('confirm text'));
+            });
+
+        document
+            .getElementById('prompt-btn')
+            .addEventListener('click', (e) => {
+                e.currentTarget.textContent = prompt('enter code');
+            });
+
+    </script>
+</body>
+
+</html>

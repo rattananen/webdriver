@@ -4,6 +4,7 @@ namespace Rattananen\Webdriver\Tests\Traits;
 
 use Rattananen\Webdriver\LocalEndInterface;
 use Rattananen\Webdriver\Element;
+use Rattananen\Webdriver\ShadowRoot;
 
 trait ElementTestTrait
 {
@@ -45,7 +46,7 @@ trait ElementTestTrait
     public function testFindAllInsideElement(): void
     {
         $session = $this->getDriver()->newSession();
-        $url = static::getWebBaseUri(). '/common.html';
+        $url = static::getWebBaseUri() . '/common.html';
 
         $session->navigateTo($url);
 
@@ -99,12 +100,12 @@ trait ElementTestTrait
 
         static::assertEquals("common img", $elem->getAttribute('title'));
 
-        static::assertEquals(static::getWebBaseUri()."/400x150.png", $elem->getProperty('src'));
+        static::assertEquals(static::getWebBaseUri() . "/400x150.png", $elem->getProperty('src'));
 
         static::assertEquals("400px", $elem->getCssValue('width'));
     }
 
-    public function testElementClick():void
+    public function testElementClick(): void
     {
         $session = $this->getDriver()->newSession();
 
@@ -117,7 +118,7 @@ trait ElementTestTrait
         static::assertEquals('clicked', $btn->getText());
     }
 
-    public function testElementSendKeysAndClear():void
+    public function testElementSendKeysAndClear(): void
     {
         $session = $this->getDriver()->newSession();
 
@@ -134,4 +135,50 @@ trait ElementTestTrait
         static::assertEquals('', $elem->getProperty('value'));
     }
 
+    public function testElementState(): void
+    {
+        $session = $this->getDriver()->newSession();
+
+        $url = static::getWebBaseUri() . '/common.html';
+
+        $session->navigateTo($url);
+
+        $checkbox = $session->find('#test-checkbox');
+
+        static::assertEquals(true,  $checkbox->isEnabled());
+
+        static::assertEquals(true,  $checkbox->isSelected());
+    }
+
+    public function testAccessibilityEndpoint(): void
+    {
+        $session = $this->getDriver()->newSession();
+
+        $url = static::getWebBaseUri() . '/common.html';
+
+        $session->navigateTo($url);
+
+        $checkbox = $session->find('#test-checkbox');
+
+        static::assertEquals('checkbox',  $checkbox->getComputedRole());
+
+        static::assertEquals('checkbox label',  $checkbox->getComputedLabel());
+    }
+
+    public function testShadowElement(): void
+    {
+        $session = $this->getDriver()->newSession();
+
+        $url = static::getWebBaseUri() . '/shadow.html';
+
+        $session->navigateTo($url);
+
+        $elem = $session->find('date-info');
+
+        $root = $elem->getShadowRoot();
+
+        static::assertInstanceOf(ShadowRoot::class, $root);
+
+        static::assertEquals('1995',  $root->find('.year')?->getText());
+    }
 }

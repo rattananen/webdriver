@@ -15,7 +15,7 @@ trait ScreenshotTrait
     {
         $res = $this->getDriver()->getClient()->get($this->getBaseUri() . '/screenshot');
 
-        return Helper::assertAndGetValue($res, 200);
+        return Utils::getStatusOkValue($res);
     }
 
     public function screenshotTo(string $filename): SplFileObject

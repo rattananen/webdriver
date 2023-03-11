@@ -8,6 +8,8 @@ use Rattananen\Webdriver\Input\InputSources\Wheel;
 use Rattananen\Webdriver\Input\InputSources\Pointer;
 use Rattananen\Webdriver\Input\InputSources\Key;
 use Rattananen\Webdriver\Types\CodePoint;
+use Rattananen\Webdriver\Types\CookieSameSite;
+use Rattananen\Webdriver\Entity\Cookie;
 
 trait SessionTestTrait
 {
@@ -25,7 +27,9 @@ trait SessionTestTrait
 
     abstract public static function assertEquals($expected, $actual, string $message = ''): void;
 
+    abstract public static function assertCount(int $expectedCount, $haystack, string $message = ''): void;
 
+    abstract public static function assertNull($actual, string $message = ''): void;
     /**
      * @doesNotPerformAssertions
      */
@@ -62,34 +66,6 @@ trait SessionTestTrait
         static::assertEquals(10, $result);
     }
 
-    public function testScreenshot(): void
-    {
-        $session = $this->getDriver()->newSession();
-        $session->window->rect(0, 0, 1024, 768);
-
-        $url = static::getWebBaseUri() . '/common.html';
-        $session->navigateTo($url);
-
-        $imgPath = static::getBaseTmpDir() . '/' . bin2hex(random_bytes(8)) . '.png';
-
-        $file = $session->screenshotTo($imgPath);
-
-        static::assertGreaterThan(15000, $file->getSize());
-    }
-
-    public function testPrintPDF(): void
-    {
-        $session = $this->getDriver()->newSession();
-        $url = static::getWebBaseUri() . '/common.html';
-        $session->navigateTo($url);
-
-        $pdfPath = static::getBaseTmpDir()  . '/' . bin2hex(random_bytes(8)) . '.pdf';
-
-        $file = $session->printTo($pdfPath);
-
-        static::assertGreaterThan(15000, $file->getSize());
-    }
-
     public function testFindSlowElement(): void
     {
         $session = $this->getDriver()->newSession();
@@ -124,6 +100,53 @@ trait SessionTestTrait
         $session->navigateTo($url);
 
         static::assertNotEmpty($session->getPageSource());
+    }
+
+    public function testTimeouts(): void
+    {
+        $session = $this->getDriver()->newSession();
+
+        $session->timeouts(100, 200, 300);
+
+        $timeouts = $session->getTimeouts();
+
+        static::assertEquals(100, $timeouts->script);
+        static::assertEquals(200, $timeouts->pageLoad);
+        static::assertEquals(300, $timeouts->implicit);
+    }
+
+    public function testHistory(): void
+    {
+        $session = $this->getDriver()->newSession();
+
+        $url = static::getWebBaseUri() . '/common.html';
+
+        $session->navigateTo($url);
+
+        $url1 = static::getWebBaseUri() . '/img.html';
+
+        $session->navigateTo($url1);
+
+        $session->back();
+
+        static::assertEquals($url, $session->getCurrentUrl());
+
+        $session->forward();
+
+        static::assertEquals($url1, $session->getCurrentUrl());
+
+        $session->refresh();
+    }
+
+    public function testGetTitle(): void
+    {
+        $session = $this->getDriver()->newSession();
+
+        $url = static::getWebBaseUri() . '/common.html';
+
+        $session->navigateTo($url);
+
+        static::assertEquals('common page', $session->getTitle());
     }
 
     public function testHoldCtrlAndClickThenRelease(): void
@@ -180,9 +203,160 @@ trait SessionTestTrait
         $wheel->scroll(0, 100, $text, 500); //need to add waiting time because of scrolling is perform in asynchronously or we might get incorrect result.
 
         $session->performActions($wheel);
-        
+
         $textScroll = $session->find('#text-scroll');
-  
+
         static::assertEquals('TAREAx0y100', $textScroll->getProperty('value'));
+    }
+
+    public function testScreenshot(): void
+    {
+        $session = $this->getDriver()->newSession();
+        $session->window->rect(0, 0, 1024, 768);
+
+        $url = static::getWebBaseUri() . '/common.html';
+        $session->navigateTo($url);
+
+        $imgPath = static::getBaseTmpDir() . '/' . bin2hex(random_bytes(8)) . '.png';
+
+        $file = $session->screenshotTo($imgPath);
+
+        static::assertGreaterThan(15000, $file->getSize());
+    }
+
+    public function testPrintPDF(): void
+    {
+        $session = $this->getDriver()->newSession();
+        $url = static::getWebBaseUri() . '/common.html';
+        $session->navigateTo($url);
+
+        $pdfPath = static::getBaseTmpDir()  . '/' . bin2hex(random_bytes(8)) . '.pdf';
+
+        $file = $session->printTo($pdfPath);
+
+        static::assertGreaterThan(15000, $file->getSize());
+    }
+
+    public function testSwitchFrame(): void
+    {
+        $session = $this->getDriver()->newSession();
+        $url = static::getWebBaseUri() . '/frame.html';
+        $session->navigateTo($url);
+
+        $frame = $session->find('iframe');
+        $session->switchToFrame($frame);
+
+        static::assertEquals('common', $session->find('h1')?->getText());
+
+        $session->switchToParentFrame();
+
+        static::assertEquals('frame', $session->find('h1')?->getText());
+    }
+
+    public function testGetActiveElement(): void
+    {
+        $session = $this->getDriver()->newSession();
+
+        $url = static::getWebBaseUri() . '/common.html';
+
+        $session->navigateTo($url);
+
+        $keyBoard = new Key();
+        $keyBoard
+            ->keyPress(CodePoint::Tab);
+
+        $session->performActions($keyBoard);
+
+        static::assertEquals('common', $session->getActiveElement()?->getText());
+    }
+
+    public function buildTestCookie(): Cookie
+    {
+        $out = new Cookie(bin2hex(random_bytes(4)), bin2hex(random_bytes(4)));
+        $out->expiry =  strtotime('+3 days');
+        $out->sameSite = CookieSameSite::Lax;
+        $out->httpOnly = false;
+        $out->secure = true;
+        return $out;
+    }
+
+    public function testCookie(): void
+    {
+        $session = $this->getDriver()->newSession();
+
+        $testCook = $this->buildTestCookie();
+
+        $url = static::getWebBaseUri()
+            .  sprintf(
+                "/cookie.php?name=%s&value=%s&time=%d&secure=%d&httponly=%d&samesite=%s",
+                $testCook->name,
+                $testCook->value,
+                $testCook->expiry,
+                $testCook->secure,
+                $testCook->httpOnly,
+                $testCook->sameSite->value
+            );
+
+        $session->navigateTo($url);
+
+        static::assertCount(1, $session->getCookies());
+
+        $testCook1 = $this->buildTestCookie();
+
+        $session->addCookie($testCook1);
+        $session->addCookie($this->buildTestCookie());
+
+        $cookie = $session->getCookie($testCook1->name);
+
+        static::assertInstanceOf(Cookie::class, $cookie);
+        static::assertEquals($testCook1->name, $cookie->name);
+        static::assertEquals($testCook1->value, $cookie->value);
+        static::assertEquals($testCook1->expiry, $cookie->expiry);
+        static::assertEquals($testCook1->sameSite, $cookie->sameSite);
+        static::assertEquals($testCook1->secure, $cookie->secure);
+        static::assertEquals($testCook1->httpOnly, $cookie->httpOnly);
+
+        $session->deleteCookie($testCook1->name);
+
+        $cookie = $session->getCookie($testCook1->name);
+
+        static::assertNull($cookie);
+
+        $session->deleteCookies();
+
+        static::assertCount(0, $session->getCookies());
+    }
+
+    public function testAlert(): void
+    {
+        $session = $this->getDriver()->newSession();
+
+        $url = static::getWebBaseUri().'/alert.html';
+
+        $session->navigateTo($url);
+
+        $abtn = $session->find('#alert-btn');
+        $abtn->click();
+
+        $session->dismissAlert();
+
+        $bbtn = $session->find('#confirm-btn');
+        $bbtn->click();
+
+        $session->acceptAlert();
+
+        static::assertEquals('true', $bbtn->getText());
+
+        $cbtn = $session->find('#prompt-btn');
+        $cbtn->click();
+
+        static::assertEquals('enter code', $session->getAlertText());
+
+        $code = random_int(0,10000);
+        $session->sendAlertText($code);
+        $session->acceptAlert();
+
+        static::assertEquals($code, $cbtn->getText());
+
     }
 }

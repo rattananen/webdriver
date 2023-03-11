@@ -8,7 +8,7 @@ use Psr\Http\Message\ResponseInterface;
 /** 
  * @final 
  */
-class Helper
+class Utils
 {
     private function __construct()
     {
@@ -19,9 +19,9 @@ class Helper
         return json_decode($response->getBody()->getContents(), true);
     }
 
-    public static function assertStatusCode(ResponseInterface $response,  int ...$codes): void
+    public static function assertStatusOk(ResponseInterface $response): void
     {
-        if (in_array($response->getStatusCode(), $codes)) {
+        if ($response->getStatusCode() == 200) {
             return;
         }
 
@@ -30,11 +30,11 @@ class Helper
         throw new WebdriverException(sprintf("HTTP code=%s, %s", $response->getStatusCode(), $data['value']['message']));
     }
 
-    public static function assertAndGetValue(ResponseInterface $response,  int ...$codes): mixed
+    public static function getStatusOkValue(ResponseInterface $response): mixed
     {
         $data = json_decode($response->getBody()->getContents(), true);
 
-        if (!in_array($response->getStatusCode(), $codes)) {
+        if ($response->getStatusCode() != 200) {
             throw new WebdriverException(sprintf("HTTP code=%s, %s", $response->getStatusCode(), $data['value']['message']));
         }
 

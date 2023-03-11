@@ -3,7 +3,7 @@
 namespace Rattananen\Webdriver\Types;
 
 /**
- * https://www.w3.org/TR/uievents/#dom-mouseevent-button
+ * @see https://www.w3.org/TR/uievents/#dom-mouseevent-button
  */
 enum PointerButton: int
 {

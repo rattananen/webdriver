@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>shadow root page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript">
+        class DateInfo extends HTMLElement {
+            #shadow
+            #day
+            #month
+            #year
+            constructor() {
+                super();
+                this.#shadow = this.attachShadow({ mode: 'open' });
+                this.#day = document.createElement('div');
+                this.#month = document.createElement('div');
+                this.#year = document.createElement('div');
+                this.#shadow.append(this.#day, this.#month, this.#year);
+
+                this.#initStyle();
+               
+            }
+            #initStyle() {
+                this.#day.className = "day";
+                this.#month.className = "month";
+                this.#year.className = "year";
+            }
+            updateValue() {
+                const time = parseInt(this.dataset.time);
+                const date = isNaN(time) ? new Date() : new Date(time);
+
+                this.#day.textContent = date.getDay();
+                this.#month.textContent = date.getMonth();
+                this.#year.textContent = date.getFullYear();
+            }
+            connectedCallback(){
+                this.updateValue();
+            }
+
+        }
+        window.customElements.define('date-info', DateInfo);
+    </script>
+</head>
+
+<body>
+    <h1>shadow root</h1>
+    <date-info data-time="818035920000"/>
+</body>
+
+</html>

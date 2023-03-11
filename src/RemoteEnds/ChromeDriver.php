@@ -3,20 +3,18 @@
 namespace Rattananen\Webdriver\RemoteEnds;
 
 use Rattananen\Webdriver\RemoteEndInterface;
-
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\Process;
 
-
+/** 
+ * @final 
+ */
 class ChromeDriver implements RemoteEndInterface
 {
     private bool $stopped = true;
 
     private Process $process;
 
-    /**
-     * no start process to prevert unused variable in IDE.
-     */
     public function __construct(?string $path = null, array $args = [])
     {
         if (!class_exists(Process::class)) {
@@ -44,7 +42,7 @@ class ChromeDriver implements RemoteEndInterface
     {
         $this->process->start();
 
-        if (!$this->process->isRunning()) { //maybe this method  will block util process is running
+        if (!$this->process->isRunning()) { //maybe this method will block util process is running
             throw new \LogicException(sprintf("Can't start chromedriver. stderr: %s", $this->process->getErrorOutput()));
         }
 

@@ -3,13 +3,10 @@
 namespace Rattananen\Webdriver\Tests\Traits;
 
 use Symfony\Component\Process\Process;
-use Rattananen\Webdriver\RemoteEnds\ChromeDriver;
 
-trait TestEnviromentTrait
+trait EnvironmentTrait
 {
     public static Process $serverProcess;
-
-    public static ChromeDriver $remote;
 
     public static string $webhost = 'localhost:8878';
 
@@ -31,11 +28,6 @@ trait TestEnviromentTrait
             if (!static::$serverProcess->isRunning()) {
                 throw new \LogicException(static::$serverProcess->getErrorOutput());
             }
-        }
-
-        if(!isset(static::$remote)){
-            static::$remote = new ChromeDriver();
-            static::$remote->start();
         }
 
         static::$tmpTestDir  = __DIR__ . '/../Resources/web/cap_test';

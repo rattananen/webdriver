@@ -22,7 +22,7 @@ class GoogleChrome implements LocalEndInterface
         $caps->alwaysMatch = new Capability();
         $caps->alwaysMatch->browserName = 'chrome';
         $caps->alwaysMatch->timeouts = new TimeoutsConfiguration();
-        $caps->alwaysMatch->browserOptions['goog:chromeOptions'] = [
+        $caps->alwaysMatch->extendOptions['goog:chromeOptions'] = [
             'args' => [
                 // auto debug port
                 //'--remote-debugging-port=0',
@@ -38,7 +38,7 @@ class GoogleChrome implements LocalEndInterface
                 '--disable-translate',
                 '--disable-extensions',
                 '--disable-features=ChromeWhatsNewUI',
-                
+
                 '--disable-gpu-sandbox',
                 '--metrics-recording-only',
                 '--no-first-run',

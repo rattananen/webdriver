@@ -3,6 +3,8 @@
 namespace Rattananen\Webdriver\Capability;
 
 use Rattananen\Webdriver\Entity\TimeoutsConfiguration;
+use Rattananen\Webdriver\Entity\PageLoadStrategy;
+use Rattananen\Webdriver\Entity\UnhandledPromptBehavior;
 
 class Capability implements \JsonSerializable
 {
@@ -15,7 +17,13 @@ class Capability implements \JsonSerializable
 
     public bool $acceptInsecureCerts = true;
 
-    public array $browserOptions = [];
+    public ?PageLoadStrategy $pageLoadStrategy = null;
+
+    public ?UnhandledPromptBehavior $unhandledPromptBehavior = null;
+
+    public bool $strictFileInteractability = false;
+
+    public array $extendOptions = [];
 
     public function jsonSerialize(): mixed
     {
@@ -23,13 +31,22 @@ class Capability implements \JsonSerializable
             'browserName' => $this->browserName,
             'timeouts' =>  $this->timeouts,
             'acceptInsecureCerts' =>  $this->acceptInsecureCerts,
+            'strictFileInteractability' => $this->strictFileInteractability
         ];
 
         if(isset($this->platformName)){
             $out['platformName'] = $this->platformName;
         }
 
-        $out += $this->browserOptions;
+        if(isset($this->pageLoadStrategy)){
+            $out['pageLoadStrategy'] = $this->pageLoadStrategy;
+        }
+
+        if(isset($this->unhandledPromptBehavior)){
+            $out['unhandledPromptBehavior'] = $this->unhandledPromptBehavior;
+        }
+
+        $out += $this->extendOptions;
         return $out;
     }
 }

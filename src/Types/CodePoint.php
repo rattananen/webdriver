@@ -3,9 +3,9 @@
 namespace Rattananen\Webdriver\Types;
 
 /**
- * mostly nonpaintable code points
+ * predefined code points
  * 
- * https://w3c.github.io/webdriver/#keyboard-actions
+ * @see https://w3c.github.io/webdriver/#keyboard-actions
  * 
  * @final
  */
