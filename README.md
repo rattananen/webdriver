@@ -123,16 +123,6 @@ $session->performActions($keyboard, $mouse); //result will be move mouse in x‐
 ```
 📙 Reason why we send pause action before Alt key down is we want key down and mousedown dispatch in same tick. [More info](https://www.w3.org/TR/webdriver/#example-11).
 
-## Todos
-
-Some ideas will implement in future.
-
-- Add input soruce builder for create variant input actions.
-- Improve Rattananen\Webdriver\Entity\PrintProperties make easier define page ranges.
-- Improve Capability for local end. I felt there is something could improve here.
-- Create separate API for implement more complex logic e.g. switch window, current API is design follow endpoints that Ok but still need more work to switch window.
-- Add Firefox, Edge driver. I want to add Safari as well but I can't install it.
-
 ## Contributing
 
 See [CONTRIBUTING.md](.github/CONTRIBUTING.md).
