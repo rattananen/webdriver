@@ -69,6 +69,8 @@ trait SessionTestTrait
     public function testFindSlowElement(): void
     {
         $session = $this->getDriver()->newSession();
+
+        $session->timeouts(implicit:1000);
         $url = static::getWebBaseUri() . '/js.html';
 
         $session->navigateTo($url);

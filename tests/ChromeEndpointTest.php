@@ -20,22 +20,27 @@ class ChromeEndpointTest extends TestCase
         LocalEndTestTrait,
         WindowTestTrait,
         SessionTestTrait,
-        ElementTestTrait;
+        ElementTestTrait {
+        setUpBeforeClass as _setUpBeforeClass;
+    }
 
-    private LocalEndInterface $local;
+    public static LocalEndInterface $local;
 
-    private ChromeDriver $remote;
+    public static ChromeDriver $remote;
 
-    public function setUp(): void
+    public static function setUpBeforeClass(): void
     {
-        $this->remote = new ChromeDriver();
-        $this->remote->start();
-        $this->local = new GoogleChrome();
+        static::_setUpBeforeClass();
+
+        static::$remote = new ChromeDriver();
+        static::$remote->start();
+
+        static::$local = new GoogleChrome();
     }
 
     public function getDriver(): LocalEndInterface
     {
-        return $this->local;
+        return static::$local;
     }
 
     /**

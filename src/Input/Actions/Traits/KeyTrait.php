@@ -2,15 +2,13 @@
 
 namespace Rattananen\Webdriver\Input\Actions\Traits;
 
-use Rattananen\Webdriver\Exception\WebdriverException;
-
 trait KeyTrait
 {
     public function __construct(
         private string $value
     ) {
         if (!\IntlChar::isdefined($this->value)) {
-            throw new WebdriverException("Invalid codepoint.");
+            throw new \InvalidArgumentException("Invalid codepoint.");
         }
     }
 

@@ -11,15 +11,15 @@ class Capability implements \JsonSerializable
 
     public string $browserName;
 
-    public ?string $platformName = null;
+    public ?string $platformName;
 
     public TimeoutsConfiguration $timeouts;
 
     public bool $acceptInsecureCerts = true;
 
-    public ?PageLoadStrategy $pageLoadStrategy = null;
+    public ?PageLoadStrategy $pageLoadStrategy;
 
-    public ?UnhandledPromptBehavior $unhandledPromptBehavior = null;
+    public ?UnhandledPromptBehavior $unhandledPromptBehavior;
 
     public bool $strictFileInteractability = false;
 

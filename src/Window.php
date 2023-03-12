@@ -42,7 +42,7 @@ class Window
     }
 
     /**
-     * @return string[]
+     * @return string[] window handles
      */
     public function getHandles(): array
     {
@@ -63,6 +63,17 @@ class Window
         $res = $this->driver->getClient()->post($this->baseUri . '/new', ['type' => $type]);
 
         return WindowInfo::fromArray(Utils::getStatusOkValue($res));
+    }
+
+    /**
+     * close current window handle
+     * 
+     * @return string[] remain window handles
+     */
+    public function close(): array
+    {
+        $res = $this->driver->getClient()->delete($this->baseUri);
+        return Utils::getStatusOkValue($res);
     }
 
     public function switchTo(string $handle): void

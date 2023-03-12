@@ -11,12 +11,10 @@ trait WindowTestTrait
     abstract public function getDriver(): LocalEndInterface;
 
     abstract public static function assertNotEmpty($actual, string $message = ''): void;
-
     abstract public static function assertEquals($expected, $actual, string $message = ''): void;
-
     abstract public static function assertInstanceOf(string $expected, $actual, string $message = ''): void;
-
     abstract public static function assertContains($needle, iterable $haystack, string $message = ''): void;
+    abstract public static function assertNotContains($needle, iterable $haystack, string $message = ''): void;
 
     public function testRect(): void
     {
@@ -52,5 +50,7 @@ trait WindowTestTrait
         $session->window->switchTo($info->handle);
 
         static::assertEquals($info->handle, $session->window->getHandle());
+
+        static::assertNotContains($info->handle, $session->window->close());
     }
 }

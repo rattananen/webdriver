@@ -5,6 +5,7 @@ namespace Rattananen\Webdriver\Tests\Traits;
 use Rattananen\Webdriver\LocalEndInterface;
 use Rattananen\Webdriver\Element;
 use Rattananen\Webdriver\ShadowRoot;
+use Rattananen\Webdriver\Entity\FileList;
 
 trait ElementTestTrait
 {
@@ -122,17 +123,23 @@ trait ElementTestTrait
     {
         $session = $this->getDriver()->newSession();
 
-        $url = static::getWebBaseUri() . '/input.html';
+        $url = static::getWebBaseUri() . '/file.html';
         $session->navigateTo($url);
 
-        $elem = $session->find('#text-a');
-        $elem->sendKeys('aeiouß');
+        $file = $session->find('#file-input');
+        $counter = $session->find('#counter');
 
-        static::assertEquals('aeiouß', $elem->getProperty('value'));
+        $files = new FileList();
+        $files[] = __DIR__ . '/../Resources/web/1920x1080.png';
+        $files[] = __DIR__ . '/../Resources/web/800x600.png';
 
-        $elem->clear();
+        $file->sendKeys($files);
 
-        static::assertEquals('', $elem->getProperty('value'));
+        static::assertEquals('2', $counter->getText());
+
+        $file->clear();
+
+        static::assertEquals('0', $counter->getText());
     }
 
     public function testElementState(): void

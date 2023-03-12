@@ -32,7 +32,7 @@ class Wheel implements InputSourceInterface
     }
 
     /**
-     * Important, scrolling is perform in asynchronously!
+     * Important, scrolling is perform in asynchronously.
      * 
      * @param int $x offsetX
      * @param int $y offsetY

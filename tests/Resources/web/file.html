@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>file</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <h1>file</h1>
+    <input id="file-input" multiple type="file" />
+    <span id="counter"></span>
+    <script>
+        document.getElementById('file-input')
+            .addEventListener('change', (e) => {
+                document.getElementById('counter').textContent = e.currentTarget.files.length;
+            });
+    </script>
+</body>
+
+</html>

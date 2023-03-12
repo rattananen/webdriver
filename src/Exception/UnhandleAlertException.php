@@ -4,7 +4,7 @@ namespace Rattananen\Webdriver\Exception;
 
 use Rattananen\Webdriver\Types\ErrorCode;
 
-class WebdriverException extends \Exception implements WebdriverExceptionInterface
+class UnhandleAlertException extends \Exception implements UnhandleAlertExceptionInterface
 {
     use WebdriverExceptionTrait;
 
@@ -13,7 +13,14 @@ class WebdriverException extends \Exception implements WebdriverExceptionInterfa
         private int $httpStatus,
         private ErrorCode $errorCode,
         private string $stacktrace,
+        private ?string $alertText = null
     ) {
+
         parent::__construct($message);
+    }
+
+    public function getAlertText(): ?string
+    {
+        return $this->alertText;
     }
 }

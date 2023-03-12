@@ -3,6 +3,9 @@
 namespace Rattananen\Webdriver;
 
 use Rattananen\Webdriver\Exception\WebdriverException;
+use Rattananen\Webdriver\Exception\UnhandleAlertException;
+use Rattananen\Webdriver\Exception\WebdriverExceptionInterface;
+use Rattananen\Webdriver\Types\ErrorCode;
 use Psr\Http\Message\ResponseInterface;
 
 /** 
@@ -25,9 +28,7 @@ class Utils
             return;
         }
 
-        $data = json_decode($response->getBody()->getContents(), true);
-
-        throw new WebdriverException(sprintf("HTTP code=%s, %s", $response->getStatusCode(), $data['value']['message']));
+        throw static::createWebdriverException($response->getStatusCode(), json_decode($response->getBody()->getContents(), true)['value']);
     }
 
     public static function getStatusOkValue(ResponseInterface $response): mixed
@@ -35,9 +36,29 @@ class Utils
         $data = json_decode($response->getBody()->getContents(), true);
 
         if ($response->getStatusCode() != 200) {
-            throw new WebdriverException(sprintf("HTTP code=%s, %s", $response->getStatusCode(), $data['value']['message']));
+            throw static::createWebdriverException($response->getStatusCode(), $data['value']);
         }
 
         return $data['value'];
+    }
+
+    public static function createWebdriverException(int $httpStatus, array $value): WebdriverExceptionInterface
+    {
+        $errorCode = ErrorCode::from($value['error']);
+        if ($errorCode == ErrorCode::UnexpectedAlertOpen) {
+            return new UnhandleAlertException(
+                $value['message'],
+                $httpStatus,
+                $errorCode,
+                $value['stacktrace'],
+                ($value['data']['text'] == '{Alert text : ') ? null : $value['data']['text'] //chrome106.0.5249.119 bug when create any alert without message argument
+            );
+        }
+        return new WebdriverException(
+            $value['message'],
+            $httpStatus,
+            $errorCode,
+            $value['stacktrace']
+        );
     }
 }

@@ -2,8 +2,6 @@
 
 namespace Rattananen\Webdriver;
 
-use Rattananen\Webdriver\Exception\WebdriverException;
-
 trait LocalEndConstructTrait
 {
     private ClientInterface $client;
@@ -23,7 +21,7 @@ trait LocalEndConstructTrait
             try {
                 $this->status();
             } catch (\Throwable $th) {
-                throw new WebdriverException(sprintf("Error while connect %s.", $this->baseUri), 0, $th);
+                throw new \RuntimeException(sprintf("Error while connect %s.", $this->baseUri), 0, $th);
             }
         }
     }

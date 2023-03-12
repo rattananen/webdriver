@@ -13,7 +13,7 @@ class TimeoutsConfiguration implements \JsonSerializable
     public function __construct(
         public ?int $script = 5000,
         public int $pageLoad = 5000,
-        public int $implicit = 3000
+        public int $implicit = 0
     ) {
     }
 

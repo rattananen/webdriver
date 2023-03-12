@@ -41,8 +41,8 @@ class ChromeDriver implements RemoteEndInterface
     public function start(): void
     {
         $this->process->start();
-
-        if (!$this->process->isRunning()) { //maybe this method will block util process is running
+        usleep(5000);// should have better way to block util process is ready
+        if (!$this->process->isRunning()) {
             throw new \LogicException(sprintf("Can't start chromedriver. stderr: %s", $this->process->getErrorOutput()));
         }
 
@@ -52,7 +52,6 @@ class ChromeDriver implements RemoteEndInterface
     public function stop(): void
     {
         $this->process->stop();
-
         $this->stopped = true;
     }
 }

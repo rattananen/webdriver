@@ -82,7 +82,7 @@ class Session
     /**
      * shorthand for setTimeouts()
      */
-    public function timeouts(?int $script = 5000, int $pageLoad = 7000, int $implicit = 4000): void
+    public function timeouts(?int $script = 5000, int $pageLoad = 7000, int $implicit = 0): void
     {
         $this->setTimeouts(new TimeoutsConfiguration($script, $pageLoad, $implicit));
     }
@@ -119,7 +119,9 @@ class Session
     }
 
     /**
-     * Execute javascript
+     * script will be script body in javascript function 
+     * then execute in promise by call function.apply(window, args)
+     * and will fulfill by result from function 
      * 
      * @see https://github.com/jlipps/simple-wd-spec#execute-script
      */
@@ -139,7 +141,8 @@ class Session
     }
 
     /**
-     * Promise-like execution. The last argument is resolver callback in promise
+     * like sync but args will append by resolve form execute promise 
+     * and will wait for fulfillment.
      */
     public function executeAsync(Script $script): mixed
     {
