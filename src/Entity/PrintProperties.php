@@ -13,13 +13,20 @@ class PrintProperties implements \JsonSerializable
     public float $marginRight = 1.0;
     public float $marginBottom = 1.0;
     public float $marginLeft = 1.0;
-    
+
     public PrintOrientation $orientation = PrintOrientation::portrait;
     public float $scale = 1.0;
     public bool $shrinkToFit = true;
     public bool $background = true;
-    public array $pageRanges = []; //TODO
+    private PageRanges $pageRanges;
 
+    /**
+     * pageRanges doesn't work with chrome driver 106
+     */
+    public function pageRanges(): PageRanges
+    {
+        return $this->pageRanges ??= new PageRanges();
+    }
 
     public function jsonSerialize(): mixed
     {
@@ -38,7 +45,7 @@ class PrintProperties implements \JsonSerializable
             'scale' => $this->scale,
             'shrinkToFit' => $this->shrinkToFit,
             'background' => $this->background,
-            'pageRanges' => $this->pageRanges
+            'pageRanges' => $this->pageRanges ?? [] //pageRanges must be array
         ];
     }
 }
