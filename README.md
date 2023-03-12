@@ -121,7 +121,7 @@ $mouse
 
 $session->performActions($keyboard, $mouse); //result will be move mouse in x‐axis 70px start from middle of #btn-test1 button then hold Alt+left click then release both mouse and key.
 ```
-📙 Reason why we send pause action before Alt key down is we want key down and mousedown dispatch in same tick. More infomation [here](https://www.w3.org/TR/webdriver/#example-11).
+📙 Reason why we send pause action before Alt key down is we want key down and mousedown dispatch in same tick. [More info](https://www.w3.org/TR/webdriver/#example-11).
 
 ## Todos
 
@@ -155,3 +155,4 @@ It will have more efficiency if We create a issue for discuss before coding.
 
 - Formating similar to current code format (I use VS Code + PHP Intelephense to format code).
 - Express intent to your code. [More Info](https://en.wikipedia.org/wiki/Self-documenting_code).
+- Test your code.
