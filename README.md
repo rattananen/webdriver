@@ -115,13 +115,37 @@ $btn = $session->find('#btn-test1');
 
 $mouse = new Pointer(null, PointerType::mouse); //create mouse input source
 $mouse
-    ->move(70, 0, $btn) //move in x‐axis 70px start from middle of #btn-test1 button.
+    ->move(70, 0, $btn) //move on x‐axis 70px start from middle of #btn-test1 button.
     ->down(PointerButton::primary)
     ->up(PointerButton::primary);
 
-$session->performActions($keyboard, $mouse); //result will be move mouse in x‐axis 70px start from middle of #btn-test1 button then hold Alt+left click then release both mouse and key.
+$session->performActions($keyboard, $mouse); //result will be move mouse on x‐axis 70px start from middle of #btn-test1 button then hold Alt+left click then release both mouse and key.
 ```
 📙 Reason why we send pause action before Alt key down is we want key down and mousedown dispatch in same tick. [More info](https://www.w3.org/TR/webdriver/#example-11).
+
+### 4. Alert handle
+
+```php
+use Rattananen\Webdriver\LocalEnds\GoogleChrome;
+use Rattananen\Webdriver\Exception\UnhandleAlertExceptionInterface;
+
+$driver = new GoogleChrome();
+$session = $driver->newSession();
+$session->navigateTo('http://localhost:8877/alert.html');
+
+$session->find('#alert-btn')?->click(); //alert appear.
+
+try{
+
+    $bbtn = $session->find('#confirm-btn'); //if there is any prompt while handle request WebDriver will result error by default.
+
+}catch(UnhandleAlertExceptionInterface $e){ //we provide special exception for this case
+
+    print $e->getAlertText();
+    
+    $session->dismissAlert();
+}
+```
 
 ## Contributing
 
