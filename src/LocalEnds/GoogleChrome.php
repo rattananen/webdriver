@@ -24,10 +24,8 @@ class GoogleChrome implements LocalEndInterface
         $caps->alwaysMatch->timeouts = new TimeoutsConfiguration();
         $caps->alwaysMatch->extendOptions['goog:chromeOptions'] = [
             'args' => [
-                // auto debug port
                 //'--remote-debugging-port=0',
 
-                // disable undesired features
                 '--disable-background-networking',
                 '--disable-background-timer-throttling',
                 '--disable-client-side-phishing-detection',
@@ -44,9 +42,8 @@ class GoogleChrome implements LocalEndInterface
                 '--no-first-run',
                 '--safebrowsing-disable-auto-update',
 
-                // password settings
                 '--password-store=basic',
-                '--use-mock-keychain', // osX only
+                '--use-mock-keychain',
                 '--headless',
                 '--disable-gpu',
                 '--disable-crash-reporter',

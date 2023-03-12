@@ -3,4 +3,3 @@
 /.gitignore export-ignore
 /phpunit.xml.dist export-ignore
 /.github export-ignore
-/example export-ignore
