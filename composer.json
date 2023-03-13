@@ -1,5 +1,6 @@
 {
     "name": "rattananen/webdriver",
+    "description": "PHP library that implement W3C WebDriver protocol.",
     "type": "library",
     "license": "MIT",
     "minimum-stability": "dev",
