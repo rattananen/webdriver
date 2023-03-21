@@ -18,11 +18,9 @@ class PrintProperties implements \JsonSerializable
     public float $scale = 1.0;
     public bool $shrinkToFit = true;
     public bool $background = true;
+    
     private PageRanges $pageRanges;
 
-    /**
-     * pageRanges doesn't work with chrome driver 106
-     */
     public function pageRanges(): PageRanges
     {
         return $this->pageRanges ??= new PageRanges();
