@@ -123,6 +123,8 @@ $session->performActions($keyboard, $mouse); //result will be move mouse on x‐
 ```
 📙 Reason why we send pause action before Alt key down is we want key down and mousedown dispatch in same tick. [More info](https://www.w3.org/TR/webdriver/#example-11).
 
+📙 There is bunch of predefine input behavior in `Rattananen\Webdriver\Input\InputBuilder`.
+
 ### 4. Alert handle
 
 ```php
@@ -136,13 +138,9 @@ $session->navigateTo('http://localhost:8877/alert.html');
 $session->find('#alert-btn')?->click(); //alert appear.
 
 try{
-
     $bbtn = $session->find('#confirm-btn'); //if there is any prompt while handle request WebDriver will result error by default.
-
 }catch(UnhandleAlertExceptionInterface $e){ //we provide special exception for this case
-
     print $e->getAlertText();
-    
     $session->dismissAlert();
 }
 ```

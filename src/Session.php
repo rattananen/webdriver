@@ -161,7 +161,7 @@ class Session
 
     public function print(?PrintProperties $printProperties = null): string
     {
-        $res = $this->driver->getClient()->post($this->baseUri . '/print', ['body' => json_encode($printProperties ?? new PrintProperties())]);
+        $res = $this->driver->getClient()->post($this->baseUri . '/print', $printProperties ?? new PrintProperties());
 
         return Utils::getStatusOkValue($res);
     }
