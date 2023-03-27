@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>canvas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background-color: #eee;
+            margin: 0;
+        }
+
+        canvas {
+            background-color: white;
+            margin-top: 200px;
+            margin-left: 200px;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="canvas-test" width="400px" height="400px"></canvas><br />
+    <textarea id="log" rows="20" cols="50" autocomplete="off"></textarea>
+    <textarea id="log_key" rows="20" cols="50" autocomplete="off"></textarea><br />
+    <script>
+        const PI2 = 2 * Math.PI;
+        class Drawing {
+            #canvas;
+            #context;
+            #pointers = new Map();
+            #willRemoveIds = [];
+            #logs = [];
+            #drawing = false;
+            #capturing = false;
+            constructor() {
+                this.#canvas = document.getElementById('canvas-test');
+                this.#context = this.#canvas.getContext("2d");
+                this._draw = this._draw.bind(this);
+                this._pointerMove = this._pointerMove.bind(this);
+            }
+            clear() {
+                this.#context.clearRect(0, 0, 800, 600);
+            }
+            _draw() {
+                const drawCircle = (vertices) => {
+                    this.#context.beginPath();
+                    const len = vertices.length;
+                    for (let i = 0; i < len; i++) {
+                        this.#context.arc(vertices[i].x, vertices[i].y, 5, 0, PI2);
+                    }
+                    vertices.splice(0, len);
+                    this.#context.stroke();
+                    this.#context.closePath();
+                }
+                for (const vertices of this.#pointers.values()) {
+                    if (vertices.length == 0) {
+                        continue;
+                    }
+                    drawCircle(vertices);
+                }
+                this.#removeCache();
+                this.#mayRemovesCapture();
+                this.#drawing = false;
+            }
+            #removeCache() {
+                if (this.#willRemoveIds.length == 0) {
+                    return;
+                }
+                for (const id of this.#willRemoveIds) {
+                    this.#pointers.delete(id);
+                }
+                this.#willRemoveIds = [];
+            }
+            mayDraw() {
+                if (!this.#drawing) {
+                    this.#drawing = true;
+                    window.requestAnimationFrame(this._draw);
+                }
+            }
+            #mayRemovesCapture() {
+                if (this.#pointers.size == 0) {
+                    this.#canvas.removeEventListener('pointermove', this._pointerMove);
+                }
+            }
+            _pointerMove(e) {
+
+                if (!this.#pointers.has(e.pointerId)) {
+                    return;
+                }
+                this.log(e);
+                this.#pointers.get(e.pointerId).push({ x: e.offsetX, y: e.offsetY });
+                this.mayDraw();
+            }
+            log(e) {
+                console.log(e);
+                this.#logs.push(`type=${e.type} id=${e.pointerId} x=${e.offsetX} y=${e.offsetY}`);
+            }
+            showlog() {
+                document.getElementById('log').value = this.#logs.join("\n");
+                this.#logs = [];
+            }
+            attachEvent() {
+                this.#canvas.addEventListener('pointerdown', (e) => {
+
+                    this.log(e);
+                    this.capturing = true;
+                    this.#pointers.set(e.pointerId, [{ x: e.offsetX, y: e.offsetY }]);
+                    this.#canvas.setPointerCapture(e.pointerId);
+                    this.#canvas.addEventListener('pointermove', this._pointerMove);
+
+                    this.mayDraw();
+                });
+
+                const outHandler = (e) => {
+
+                    if (!this.capturing || !this.#pointers.has(e.pointerId)) {
+                        return;
+                    }
+                    this.log(e);
+                    this.showlog();
+                    this.capturing = false;
+                    // this.#pointers.get(e.pointerId).push({ x: e.offsetX, y: e.offsetY });
+
+                    this.#willRemoveIds.push(e.pointerId);
+
+                    this.#canvas.releasePointerCapture(e.pointerId);
+
+                    this.mayDraw();
+                }
+                this.#canvas.addEventListener('pointerup', outHandler);
+                this.#canvas.addEventListener('pointerout', outHandler);
+            }
+
+        }
+        const d = new Drawing();
+        d.attachEvent();
+
+        const log_key = document.getElementById('log_key');
+        window.addEventListener('keydown', (e) => {
+            log_key.value += `type=${e.type} key=${e.key}\n`
+        });
+        window.addEventListener('keyup', (e) => {
+            log_key.value += `type=${e.type} key=${e.key}\n`
+        });
+    </script>
+</body>
+
+</html>
