@@ -18,11 +18,13 @@ class GoogleChrome implements LocalEndInterface
 
     public static function getDefaultCapabilities(): Capabilities
     {
-        $caps = new Capabilities();
-        $caps->alwaysMatch = new Capability();
-        $caps->alwaysMatch->browserName = 'chrome';
-        $caps->alwaysMatch->timeouts = new TimeoutsConfiguration();
-        $caps->alwaysMatch->extendOptions['goog:chromeOptions'] = [
+      
+        $always = new Capability();
+        $always->browserName = 'chrome';
+        $always->timeouts = new TimeoutsConfiguration();
+        $always->acceptInsecureCerts = true;
+        $always->strictFileInteractability = false;
+        $always->extendOptions['goog:chromeOptions'] = [
             'args' => [
                 //'--remote-debugging-port=0',
 
@@ -56,6 +58,6 @@ class GoogleChrome implements LocalEndInterface
             ]
         ];
 
-        return $caps;
+        return  new Capabilities($always);
     }
 }
