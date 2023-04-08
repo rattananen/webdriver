@@ -15,7 +15,7 @@ class Scroll implements ActionInterface
     /**
      * @param int $x offsetX
      * @param int $y offsetY
-     * @param int|null $duration waiting time in ms
+     * @param int|null $duration scrolling animation time in ms
      */
     public function __construct(
         public int $deltaX,

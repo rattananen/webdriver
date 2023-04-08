@@ -11,6 +11,8 @@ class Capability implements \JsonSerializable
 
     public ?string $browserName;
 
+    public ?string $browserVersion;
+
     public ?string $platformName;
 
     public ?TimeoutsConfiguration $timeouts;
@@ -31,6 +33,10 @@ class Capability implements \JsonSerializable
 
         if (isset($this->browserName)) {
             $out['browserName'] = $this->browserName;
+        }
+
+        if (isset($this->browserVersion)) {
+            $out['browserVersion'] = $this->browserVersion;
         }
 
         if (isset($this->timeouts)) {

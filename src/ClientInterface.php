@@ -13,7 +13,7 @@ interface ClientInterface
     /**
      * @param string $uri absolute URL
      * 
-     * @param mixed $data will serialize to json object
+     * @param mixed $data data will be json serialize to request body.
      */
     public function post(string $uri, mixed $data = null): ResponseInterface;
 }
