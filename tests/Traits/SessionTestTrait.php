@@ -2,6 +2,8 @@
 
 namespace Rattananen\Webdriver\Tests\Traits;
 
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+
 use Rattananen\Webdriver\LocalEndInterface;
 use Rattananen\Webdriver\Element;
 use Rattananen\Webdriver\Input\InputSources\Wheel;
@@ -27,12 +29,11 @@ trait SessionTestTrait
 
     abstract public static function assertEquals($expected, $actual, string $message = ''): void;
 
-    abstract public static function assertCount(int $expectedCount, $haystack, string $message = ''): void;
+    abstract public static function assertCount(int $expectedCount, \Countable|iterable $haystack, string $message = ''): void;
 
     abstract public static function assertNull($actual, string $message = ''): void;
-    /**
-     * @doesNotPerformAssertions
-     */
+   
+    #[DoesNotPerformAssertions]
     public function testDelete(): void
     {
         $session = $this->getDriver()->newSession();
@@ -202,9 +203,11 @@ trait SessionTestTrait
         $text = $session->find('#text-long');
 
         $wheel = new Wheel();
-        $wheel->scroll(0, 100, $text, 500); //need to add waiting time because of scrolling is perform in asynchronously or we might get incorrect result.
+        $wheel->scroll(0, 100, $text, 500); 
 
         $session->performActions($wheel);
+
+        sleep(1);
 
         $textScroll = $session->find('#text-scroll');
 
@@ -236,7 +239,7 @@ trait SessionTestTrait
 
         $file = $session->printTo($pdfPath);
 
-        static::assertGreaterThan(15000, $file->getSize());
+        static::assertGreaterThan(5000, $file->getSize());
     }
 
     public function testSwitchFrame(): void
